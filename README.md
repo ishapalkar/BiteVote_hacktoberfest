@@ -1,5 +1,9 @@
 # 🍽️ BiteVote — Vote. Match. Eat.
 
+<p align="center">
+  <img src="cover.png" alt="BiteVote: Vote. Match. Eat." width="100%" />
+</p>
+
 > **The AI-Powered Compromise Engine that ends the 45-minute "Where should we eat?" debate forever.**  
 > Built for the **Hacktoberfest 2026 Weekend Challenge: Build for a Friend** (`#devchallenge #weekendchallenge #hf26challenge`).
 

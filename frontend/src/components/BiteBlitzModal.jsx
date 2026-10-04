@@ -324,25 +324,25 @@ export default function BiteBlitzModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
-      <div className="relative w-full max-w-2xl glass-panel rounded-3xl border border-amber-500/40 bg-slate-900/95 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-stone-900/60 backdrop-blur-sm animate-fadeIn">
+      <div className="relative w-full max-w-2xl bg-white rounded-3xl border border-cream-200 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
         
         {/* Top Header Bar */}
-        <div className="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between bg-gradient-to-r from-amber-950/30 via-slate-900 to-purple-950/30">
+        <div className="p-4 sm:p-5 border-b border-cream-200 flex items-center justify-between bg-gradient-to-r from-cream-50 via-white to-amber-50/40">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center text-slate-950 shadow-md">
-              <Zap className="w-5 h-5 fill-slate-950" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center text-white shadow-soft">
+              <Zap className="w-5 h-5 fill-white" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-black uppercase tracking-wider text-amber-400">
+                <span className="text-xs font-black uppercase tracking-wider text-amber-700">
                   Bite Blitz
                 </span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cream-100 text-stone-700 border border-cream-200">
                   {currentRound <= 3 ? `Round ${currentRound} of 3` : 'Podium'}
                 </span>
               </div>
-              <h3 className="text-sm sm:text-base font-black text-white">
+              <h3 className="text-sm sm:text-base font-black text-stone-900">
                 {currentRound === 1 && 'Round 1: Guess the Dish'}
                 {currentRound === 2 && 'Round 2: Guess the Price'}
                 {currentRound === 3 && 'Round 3: Real or Fake'}
@@ -353,15 +353,15 @@ export default function BiteBlitzModal({
 
           <div className="flex items-center gap-2">
             {currentRound <= 3 && (
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700 text-xs font-mono font-bold text-amber-300">
-                <Clock className="w-3.5 h-3.5 text-amber-400" />
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cream-50 border border-cream-200 text-xs font-mono font-bold text-amber-800">
+                <Clock className="w-3.5 h-3.5 text-amber-600" />
                 <span>{roundTimeLeft}s</span>
               </div>
             )}
             <button
               onClick={onClose}
               disabled={loading}
-              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-400 hover:text-white transition-colors"
+              className="p-2 rounded-xl bg-cream-50 hover:bg-cream-100 border border-cream-200 text-stone-500 hover:text-stone-800 transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -369,9 +369,9 @@ export default function BiteBlitzModal({
         </div>
 
         {/* Progress Bar */}
-        <div className="w-full bg-slate-800 h-1.5 overflow-hidden">
+        <div className="w-full bg-cream-100 h-1.5 overflow-hidden">
           <div 
-            className="h-full bg-gradient-to-r from-amber-400 via-orange-500 to-brand-500 transition-all duration-300"
+            className="h-full bg-gradient-to-r from-amber-400 via-orange-400 to-brand-500 transition-all duration-300"
             style={{ width: `${(currentRound / 4) * 100}%` }}
           />
         </div>
@@ -383,19 +383,19 @@ export default function BiteBlitzModal({
           {currentRound === 1 && (
             <div className="space-y-4 animate-fadeIn">
               <div className="text-center space-y-1">
-                <span className="text-[11px] font-bold text-amber-400 uppercase tracking-wider">
+                <span className="text-[11px] font-bold text-amber-700 uppercase tracking-wider">
                   Speed Trivia
                 </span>
-                <h4 className="text-base sm:text-lg font-bold text-white">
+                <h4 className="text-base sm:text-lg font-bold text-stone-900">
                   Identify this mouthwatering Indian specialty:
                 </h4>
-                <p className="text-xs text-slate-400 italic">
+                <p className="text-xs text-stone-500 italic">
                   Hint: “{q1.hint}”
                 </p>
               </div>
 
               {/* Food Image */}
-              <div className="relative aspect-video max-h-56 w-full rounded-2xl overflow-hidden border border-slate-800 shadow-md mx-auto">
+              <div className="relative aspect-video max-h-56 w-full rounded-2xl overflow-hidden border border-cream-200 shadow-soft mx-auto bg-cream-100">
                 <img 
                   src={q1.image} 
                   alt="Guess the dish" 
@@ -406,14 +406,14 @@ export default function BiteBlitzModal({
               {/* 4 Multiple Choice Options */}
               <div className="grid grid-cols-2 gap-2.5 pt-1">
                 {q1.options.map((opt, idx) => {
-                  let btnStyle = "border-slate-800 bg-slate-900/80 hover:border-amber-500/50 text-white";
+                  let btnStyle = "border-cream-200 bg-cream-50/60 hover:bg-white hover:border-brand-300 text-stone-800";
                   if (r1Answered) {
                     if (idx === q1.correct) {
-                      btnStyle = "border-emerald-500 bg-emerald-950/40 text-emerald-200 ring-2 ring-emerald-500/50";
+                      btnStyle = "border-emerald-400 bg-emerald-50 text-emerald-800 ring-2 ring-emerald-300";
                     } else if (idx === r1Selected) {
-                      btnStyle = "border-rose-500 bg-rose-950/40 text-rose-200";
+                      btnStyle = "border-rose-300 bg-rose-50 text-rose-800";
                     } else {
-                      btnStyle = "border-slate-800 opacity-40 text-slate-400";
+                      btnStyle = "border-cream-200 opacity-40 text-stone-400";
                     }
                   }
 
@@ -422,14 +422,14 @@ export default function BiteBlitzModal({
                       key={idx}
                       onClick={() => handleR1Answer(idx)}
                       disabled={r1Answered}
-                      className={`p-3.5 rounded-xl border font-bold text-xs sm:text-sm text-left transition-all flex items-center justify-between ${btnStyle}`}
+                      className={`p-3.5 rounded-xl border font-bold text-xs sm:text-sm text-left transition-all flex items-center justify-between shadow-xs ${btnStyle}`}
                     >
                       <span>{opt}</span>
                       {r1Answered && idx === q1.correct && (
-                        <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <Check className="w-4 h-4 text-emerald-600 shrink-0" />
                       )}
                       {r1Answered && idx === r1Selected && idx !== q1.correct && (
-                        <X className="w-4 h-4 text-rose-400 shrink-0" />
+                        <X className="w-4 h-4 text-rose-600 shrink-0" />
                       )}
                     </button>
                   );
@@ -442,33 +442,33 @@ export default function BiteBlitzModal({
           {currentRound === 2 && (
             <div className="space-y-4 animate-fadeIn">
               <div className="text-center space-y-1">
-                <span className="text-[11px] font-bold text-amber-400 uppercase tracking-wider">
+                <span className="text-[11px] font-bold text-amber-700 uppercase tracking-wider">
                   Menu Price Estimation
                 </span>
-                <h4 className="text-base sm:text-lg font-bold text-white">
+                <h4 className="text-base sm:text-lg font-bold text-stone-900">
                   How much does this real dish cost?
                 </h4>
-                <div className="text-xs text-amber-300 font-semibold">
+                <div className="text-xs text-brand-600 font-bold">
                   {q2.dish} • {q2.locality}
                 </div>
               </div>
 
-              <div className="glass-card rounded-2xl p-4 border border-slate-800 flex gap-4 items-center bg-slate-900/70">
+              <div className="bg-cream-50/60 rounded-2xl p-4 border border-cream-200 flex gap-4 items-center">
                 <img 
                   src={q2.image} 
                   alt={q2.dish} 
-                  className="w-20 h-20 rounded-xl object-cover border border-slate-800 shrink-0" 
+                  className="w-20 h-20 rounded-xl object-cover border border-cream-200 shrink-0" 
                 />
-                <p className="text-xs text-slate-300 leading-relaxed">
+                <p className="text-xs text-stone-600 leading-relaxed">
                   {q2.desc}
                 </p>
               </div>
 
               {/* Price Slider */}
-              <div className="glass-panel rounded-2xl p-5 border border-slate-800 space-y-4 text-center">
+              <div className="bg-white rounded-2xl p-5 border border-cream-200 space-y-4 text-center shadow-soft">
                 <div className="space-y-1">
-                  <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Your Price Guess</span>
-                  <div className="text-3xl font-black text-amber-400 font-mono">
+                  <span className="text-[10px] uppercase font-bold text-stone-500 tracking-wider">Your Price Guess</span>
+                  <div className="text-3xl font-black text-amber-600 font-mono">
                     ₹{guessedPrice}
                   </div>
                 </div>
@@ -481,10 +481,10 @@ export default function BiteBlitzModal({
                   value={guessedPrice}
                   disabled={r2Submitted}
                   onChange={(e) => setGuessedPrice(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                  className="w-full h-2 bg-cream-200 rounded-lg appearance-none cursor-pointer accent-amber-500"
                 />
 
-                <div className="flex justify-between text-[11px] text-slate-500 font-mono">
+                <div className="flex justify-between text-[11px] text-stone-400 font-mono">
                   <span>₹{q2.min}</span>
                   <span>₹{q2.max}</span>
                 </div>
@@ -492,17 +492,17 @@ export default function BiteBlitzModal({
                 {!r2Submitted ? (
                   <button
                     onClick={handlePriceSubmit}
-                    className="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 text-slate-950 font-black text-xs shadow-md transition-all"
+                    className="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 text-white font-black text-xs shadow-soft transition-all"
                   >
                     Lock In Price Guess
                   </button>
                 ) : (
-                  <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-medium space-y-1">
+                  <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs font-medium space-y-1">
                     <div>
-                      Verified Restaurant Price: <span className="font-bold text-white font-mono">₹{q2.realPrice}</span>
+                      Verified Restaurant Price: <span className="font-bold text-stone-900 font-mono">₹{q2.realPrice}</span>
                     </div>
-                    <div className="text-[11px] text-slate-300">
-                      Your guess was off by <span className="font-bold text-amber-200">₹{Math.abs(guessedPrice - q2.realPrice)}</span>. Points awarded!
+                    <div className="text-[11px] text-stone-600">
+                      Your guess was off by <span className="font-bold text-amber-800">₹{Math.abs(guessedPrice - q2.realPrice)}</span>. Points awarded!
                     </div>
                   </div>
                 )}
@@ -514,27 +514,27 @@ export default function BiteBlitzModal({
           {currentRound === 3 && (
             <div className="space-y-4 animate-fadeIn">
               <div className="text-center space-y-1">
-                <span className="text-[11px] font-bold text-rose-400 uppercase tracking-wider">
+                <span className="text-[11px] font-bold text-brand-600 uppercase tracking-wider">
                   Spot the Fake Fact
                 </span>
-                <h4 className="text-base sm:text-lg font-bold text-white">
+                <h4 className="text-base sm:text-lg font-bold text-stone-900">
                   Two of these claims are real culinary facts. One is completely fake!
                 </h4>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-stone-500">
                   Topic: {q3.topic} — tap the one that is fabricated:
                 </p>
               </div>
 
               <div className="space-y-2.5">
                 {q3.claims.map((claim) => {
-                  let cardStyle = "border-slate-800 bg-slate-900/80 hover:border-rose-500/40 text-slate-200";
+                  let cardStyle = "border-cream-200 bg-cream-50/60 hover:bg-white hover:border-brand-300 text-stone-800";
                   if (r3Answered) {
                     if (claim.isFake) {
-                      cardStyle = "border-emerald-500 bg-emerald-950/40 text-emerald-200 ring-2 ring-emerald-500/50";
+                      cardStyle = "border-emerald-400 bg-emerald-50 text-emerald-800 ring-2 ring-emerald-300";
                     } else if (claim.id === r3Selected) {
-                      cardStyle = "border-rose-500 bg-rose-950/40 text-rose-200";
+                      cardStyle = "border-rose-300 bg-rose-50 text-rose-800";
                     } else {
-                      cardStyle = "border-slate-800 opacity-50 text-slate-400";
+                      cardStyle = "border-cream-200 opacity-50 text-stone-400";
                     }
                   }
 
@@ -542,21 +542,21 @@ export default function BiteBlitzModal({
                     <div
                       key={claim.id}
                       onClick={() => handleR3Answer(claim.id)}
-                      className={`p-4 rounded-xl border text-xs sm:text-sm font-medium transition-all cursor-pointer flex items-start gap-3 ${cardStyle}`}
+                      className={`p-4 rounded-xl border text-xs sm:text-sm font-medium transition-all cursor-pointer flex items-start gap-3 shadow-xs ${cardStyle}`}
                     >
-                      <div className="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 text-slate-300">
+                      <div className="w-6 h-6 rounded-full bg-cream-100 border border-cream-200 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 text-stone-600">
                         {claim.id.toUpperCase()}
                       </div>
                       <div className="flex-1 space-y-1">
                         <p>{claim.text}</p>
                         {r3Answered && claim.isFake && (
-                          <p className="text-[11px] text-emerald-300 font-semibold pt-1">
+                          <p className="text-[11px] text-emerald-700 font-semibold pt-1">
                             {claim.explanation}
                           </p>
                         )}
                       </div>
                       {r3Answered && claim.isFake && (
-                        <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <Check className="w-4 h-4 text-emerald-600 shrink-0" />
                       )}
                     </div>
                   );
@@ -569,36 +569,36 @@ export default function BiteBlitzModal({
           {currentRound === 4 && (
             <div className="space-y-5 animate-fadeIn">
               <div className="text-center space-y-2">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold uppercase tracking-wider">
-                  <Trophy className="w-3.5 h-3.5 text-amber-400" />
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold uppercase tracking-wider">
+                  <Trophy className="w-3.5 h-3.5 text-amber-500" />
                   Bite Blitz Champion
                 </div>
-                <h3 className="text-2xl font-black text-white">
+                <h3 className="text-2xl font-black text-stone-900">
                   {champion.name} Reigns Supreme!
                 </h3>
-                <p className="text-xs text-slate-400 max-w-md mx-auto">
+                <p className="text-xs text-stone-500 max-w-md mx-auto">
                   Earned {champion.score} points across 3 rapid rounds of food trivia.
                 </p>
               </div>
 
               {/* Champion Card */}
-              <div className="glass-card rounded-2xl p-5 border border-amber-500/40 bg-gradient-to-r from-amber-950/30 via-slate-900 to-purple-950/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="bg-gradient-to-r from-cream-50 via-white to-amber-50/50 rounded-2xl p-5 border border-amber-200 shadow-soft flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <Avatar avatarId={champion.avatar} size="xl" alt={champion.name} />
                   <div>
-                    <div className="text-xs uppercase font-extrabold text-amber-400 flex items-center gap-1">
-                      <Award className="w-3.5 h-3.5" /> 1st Place Winner
+                    <div className="text-xs uppercase font-extrabold text-amber-700 flex items-center gap-1">
+                      <Award className="w-3.5 h-3.5 text-amber-500" /> 1st Place Winner
                     </div>
-                    <div className="text-xl font-black text-white">{champion.name}</div>
-                    <div className="text-xs text-slate-300">
-                      Favored Spot: <span className="font-bold text-amber-300">{champRestaurant.name}</span>
+                    <div className="text-xl font-black text-stone-900">{champion.name}</div>
+                    <div className="text-xs text-stone-600">
+                      Favored Spot: <span className="font-bold text-brand-600">{champRestaurant.name}</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <span className="text-[10px] uppercase font-bold text-slate-400">Total Score</span>
-                  <div className="text-2xl font-black text-amber-400 font-mono">
+                  <span className="text-[10px] uppercase font-bold text-stone-400">Total Score</span>
+                  <div className="text-2xl font-black text-amber-600 font-mono">
                     {champion.score} pts
                   </div>
                 </div>
@@ -606,37 +606,37 @@ export default function BiteBlitzModal({
 
               {/* Full Leaderboard */}
               <div className="space-y-2">
-                <div className="flex items-center justify-between text-xs text-slate-400 px-1">
+                <div className="flex items-center justify-between text-xs text-stone-500 px-1">
                   <span className="font-bold uppercase tracking-wider text-[10px]">Leaderboard</span>
                   <span>{sortedLeaderboard.length} Squad Members</span>
                 </div>
-                <div className="glass-panel rounded-xl overflow-hidden border border-slate-800 divide-y divide-slate-800">
+                <div className="bg-white rounded-xl overflow-hidden border border-cream-200 divide-y divide-cream-100 shadow-soft">
                   {sortedLeaderboard.map((player, rankIdx) => (
                     <div key={player.id} className="p-3 flex items-center justify-between text-xs">
                       <div className="flex items-center gap-3">
-                        <span className="font-bold text-slate-500 w-4">#{rankIdx + 1}</span>
+                        <span className="font-bold text-stone-400 w-4">#{rankIdx + 1}</span>
                         <Avatar avatarId={player.avatar} size="xs" alt={player.name} />
-                        <span className="font-bold text-white">{player.name}</span>
+                        <span className="font-bold text-stone-900">{player.name}</span>
                         {player.id === currentUser?.id && (
-                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">You</span>
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-cream-100 text-stone-600">You</span>
                         )}
                       </div>
-                      <span className="font-mono font-bold text-amber-300">{player.score} pts</span>
+                      <span className="font-mono font-bold text-teal-700">{player.score} pts</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Tie-Breaker Decision Impact Explanation */}
-              <div className="glass-card rounded-xl p-4 border border-indigo-500/30 bg-indigo-950/20 space-y-2">
-                <div className="flex items-center gap-2 text-indigo-300 text-xs font-bold">
-                  <Scale className="w-4 h-4 text-indigo-400" />
+              <div className="bg-teal-50/60 rounded-xl p-4 border border-teal-200/80 space-y-2">
+                <div className="flex items-center gap-2 text-teal-800 text-xs font-bold">
+                  <Scale className="w-4 h-4 text-teal-600" />
                   <span>How this influences the decision:</span>
                 </div>
-                <p className="text-xs text-slate-300 leading-relaxed">
-                  As Champion, {champion.name}'s preferred restaurant (<span className="font-bold text-white">{champRestaurant.name}</span>) receives a <span className="font-bold text-emerald-400">small tie-breaker boost (+7.5 pts)</span> for Gemma's arbitration.
+                <p className="text-xs text-stone-700 leading-relaxed">
+                  As Champion, {champion.name}'s preferred restaurant (<span className="font-bold text-stone-900">{champRestaurant.name}</span>) receives a <span className="font-bold text-teal-700">small tie-breaker boost (+7.5 pts)</span> for Gemma's arbitration.
                 </p>
-                <div className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800 text-[11px] text-amber-300/90 font-medium">
+                <div className="p-2.5 rounded-lg bg-white border border-teal-200 text-[11px] text-teal-900 font-medium">
                   “Bite Blitz can break a tie, but it can never override someone's dietary boundaries.”
                 </div>
               </div>
@@ -645,8 +645,8 @@ export default function BiteBlitzModal({
 
           {/* Live Squad Reactions Strip (Rounds 1-3) */}
           {currentRound <= 3 && (
-            <div className="pt-2 border-t border-slate-800/80 space-y-2">
-              <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-1.5">
+            <div className="pt-2 border-t border-cream-200 space-y-2">
+              <span className="text-[10px] uppercase font-bold text-stone-400 tracking-wider flex items-center gap-1.5">
                 <Users className="w-3.5 h-3.5" /> Squad Activity
               </span>
               <div className="flex flex-wrap gap-2">
@@ -658,16 +658,16 @@ export default function BiteBlitzModal({
                       key={p.id} 
                       className={`flex items-center gap-2 px-2.5 py-1 rounded-xl border text-xs transition-all ${
                         hasAnswered 
-                          ? 'bg-amber-500/10 border-amber-500/30 text-amber-300' 
-                          : 'bg-slate-900/60 border-slate-800 text-slate-400'
+                          ? 'bg-amber-50 border-amber-200 text-amber-800' 
+                          : 'bg-cream-50 border-cream-200 text-stone-500'
                       }`}
                     >
                       <Avatar avatarId={p.avatar} size="xs" alt={p.name} />
                       <span className="font-semibold">{p.name}</span>
                       {fb ? (
-                        <span className="text-[10px] font-mono font-bold text-emerald-400">{fb}</span>
+                        <span className="text-[10px] font-mono font-bold text-teal-700">{fb}</span>
                       ) : (
-                        <span className="text-[10px] text-slate-500 italic">Thinking...</span>
+                        <span className="text-[10px] text-stone-400 italic">Thinking...</span>
                       )}
                     </div>
                   );
@@ -679,13 +679,13 @@ export default function BiteBlitzModal({
         </div>
 
         {/* Footer Actions */}
-        <div className="p-4 sm:p-5 border-t border-slate-800 bg-slate-900/80 flex items-center justify-between gap-3">
+        <div className="p-4 sm:p-5 border-t border-cream-200 bg-cream-50/60 flex items-center justify-between gap-3">
           {currentRound <= 3 ? (
             <>
               <button
                 onClick={onSkipTieBreak}
                 disabled={loading}
-                className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-semibold text-xs transition-colors"
+                className="px-4 py-2.5 rounded-xl bg-white hover:bg-cream-100 border border-cream-200 text-stone-700 font-semibold text-xs transition-colors shadow-xs"
               >
                 Skip Game
               </button>
@@ -697,7 +697,7 @@ export default function BiteBlitzModal({
                   (currentRound === 2 && !r2Submitted) ||
                   (currentRound === 3 && !r3Answered)
                 }
-                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-xs shadow-md transition-all flex items-center gap-1.5 disabled:opacity-50"
+                className="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-black text-xs shadow-soft transition-all flex items-center gap-1.5 disabled:opacity-50"
               >
                 <span>{currentRound === 3 ? 'View Champion Podium' : 'Next Round'}</span>
                 <ChevronRight className="w-4 h-4" />
@@ -708,7 +708,7 @@ export default function BiteBlitzModal({
               <button
                 onClick={onSkipTieBreak}
                 disabled={loading}
-                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-semibold text-xs transition-colors"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-white hover:bg-cream-100 border border-cream-200 text-stone-700 font-semibold text-xs transition-colors shadow-xs"
               >
                 Decide Normally (Ignore Tie-Breaker)
               </button>
@@ -716,7 +716,7 @@ export default function BiteBlitzModal({
               <button
                 onClick={handleApplyTieBreak}
                 disabled={loading}
-                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-brand-500 hover:from-amber-400 text-slate-950 font-black text-xs shadow-glow transition-all flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-brand-500 to-amber-500 hover:from-brand-600 text-white font-black text-xs shadow-soft transition-all flex items-center justify-center gap-2"
               >
                 <Sparkles className="w-4 h-4" />
                 <span>{loading ? 'Gemma is Arbitrating...' : 'Apply Tie-Break & Summon Gemma AI'}</span>

@@ -56,20 +56,20 @@ export default function BiteGuideSection({ restaurant, city }) {
     switch (strength?.toLowerCase()) {
       case 'must-try':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/40">
-            <Flame className="w-3 h-3 text-rose-400" /> Must-Try
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-brand-50 text-brand-700 border border-brand-200">
+            <Flame className="w-3 h-3 text-brand-500" /> Must-Try
           </span>
         );
       case 'signature pick':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40">
-            <Award className="w-3 h-3 text-amber-400" /> Signature Pick
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200">
+            <Award className="w-3 h-3 text-amber-500" /> Signature Pick
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
-            <CheckCircle2 className="w-3 h-3 text-emerald-400" /> Crowd Favorite
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-teal-50 text-teal-700 border border-teal-200">
+            <CheckCircle2 className="w-3 h-3 text-teal-600" /> Crowd Favorite
           </span>
         );
     }
@@ -81,28 +81,28 @@ export default function BiteGuideSection({ restaurant, city }) {
       {!isOpen && !loading && (
         <div 
           onClick={handleToggle}
-          className="group relative overflow-hidden rounded-2xl glass-card border border-amber-500/30 hover:border-amber-400/60 p-6 cursor-pointer transition-all duration-300 hover:shadow-glow bg-gradient-to-r from-slate-900/90 via-purple-950/20 to-slate-900/90"
+          className="group relative overflow-hidden rounded-2xl bg-white border border-cream-200 hover:border-brand-300 p-6 cursor-pointer transition-all duration-300 shadow-soft hover:shadow-md"
         >
-          <div className="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-all pointer-events-none" />
+          <div className="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-brand-500/5 rounded-full blur-2xl group-hover:bg-brand-500/10 transition-all pointer-events-none" />
           
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
             <div className="flex items-start sm:items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-rose-500 flex items-center justify-center text-white shrink-0 shadow-lg group-hover:scale-105 transition-transform">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-500 to-amber-500 flex items-center justify-center text-white shrink-0 shadow-soft group-hover:scale-105 transition-transform">
                 <Compass className="w-6 h-6 text-white" />
               </div>
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                  <span className="text-xs font-black uppercase tracking-wider text-brand-600 flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5" /> BiteGuide Web Intelligence
                   </span>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-semibold">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-cream-100 text-stone-600 border border-cream-200 font-semibold">
                     SerpApi + Gemma 2
                   </span>
                 </div>
-                <h3 className="text-lg font-black text-white group-hover:text-amber-200 transition-colors">
+                <h3 className="heading-h3 group-hover:text-brand-600 transition-colors">
                   Discover What to Order at {restaurant.name}
                 </h3>
-                <p className="text-xs text-slate-300">
+                <p className="body-small text-stone-600">
                   We scanned Google food critic reviews and YouTube tasting vlogs. See the dishes people actually rave about.
                 </p>
               </div>
@@ -110,7 +110,7 @@ export default function BiteGuideSection({ restaurant, city }) {
 
             <button 
               type="button"
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-brand-500 hover:from-amber-600 hover:to-brand-600 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm shrink-0 transition-all group-hover:shadow-glow"
+              className="px-5 py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-soft shrink-0 transition-all"
             >
               <Search className="w-3.5 h-3.5" />
               <span>Explore BiteGuide</span>
@@ -121,21 +121,21 @@ export default function BiteGuideSection({ restaurant, city }) {
 
       {/* Loading Skeleton & Progress */}
       {loading && (
-        <div className="glass-panel rounded-2xl p-6 border border-amber-500/30 bg-slate-900/90 text-center space-y-4 animate-pulse">
-          <div className="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto">
-            <RefreshCw className="w-6 h-6 animate-spin text-amber-400" />
+        <div className="bg-white rounded-2xl p-6 border border-cream-200 text-center space-y-4 shadow-soft animate-pulse">
+          <div className="w-12 h-12 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center mx-auto border border-brand-100">
+            <RefreshCw className="w-6 h-6 animate-spin text-brand-500" />
           </div>
           <div className="space-y-1">
-            <h4 className="text-base font-bold text-white">Synthesizing BiteGuide Intelligence...</h4>
-            <p className="text-xs text-slate-400">
+            <h4 className="text-base font-bold text-stone-900">Synthesizing BiteGuide Intelligence...</h4>
+            <p className="text-xs text-stone-500">
               {loadingStep === 1 && "Searching Google food reviews and blog articles via SerpApi..."}
               {loadingStep === 2 && "Analyzing YouTube dining vlogs and tasting menus in " + (city || "city") + "..."}
               {loadingStep >= 3 && "Google Gemma 2 is synthesizing grounded dish recommendations..."}
             </p>
           </div>
-          <div className="w-48 h-1.5 bg-slate-800 rounded-full mx-auto overflow-hidden">
+          <div className="w-48 h-1.5 bg-cream-100 rounded-full mx-auto overflow-hidden">
             <div 
-              className="h-full bg-gradient-to-r from-amber-400 to-brand-500 transition-all duration-700 ease-out" 
+              className="h-full bg-gradient-to-r from-brand-400 to-amber-500 transition-all duration-700 ease-out" 
               style={{ width: loadingStep === 1 ? '35%' : loadingStep === 2 ? '70%' : '95%' }}
             />
           </div>
@@ -144,14 +144,14 @@ export default function BiteGuideSection({ restaurant, city }) {
 
       {/* Error Banner */}
       {error && !loading && (
-        <div className="glass-card rounded-xl p-4 border border-rose-500/40 bg-rose-950/20 text-xs text-rose-300 flex items-center justify-between">
+        <div className="bg-rose-50 rounded-xl p-4 border border-rose-200 text-xs text-rose-800 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+            <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
             <span>{error}</span>
           </div>
           <button
             onClick={fetchGuide}
-            className="px-3 py-1 rounded-lg bg-rose-900/40 hover:bg-rose-900/60 border border-rose-700 text-rose-200 font-semibold"
+            className="px-3 py-1 rounded-lg bg-white hover:bg-rose-100 border border-rose-300 text-rose-800 font-semibold"
           >
             Retry
           </button>
@@ -160,22 +160,22 @@ export default function BiteGuideSection({ restaurant, city }) {
 
       {/* Full BiteGuide Content Panel */}
       {isOpen && data && (
-        <div className="glass-panel rounded-3xl p-6 md:p-8 border border-amber-500/40 bg-slate-900/95 space-y-6 shadow-glow relative animate-fadeIn">
+        <div className="bg-white rounded-3xl p-6 md:p-8 border border-cream-200 space-y-6 shadow-soft relative animate-fadeIn">
           {/* Header Bar */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-800">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-cream-200">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-black uppercase tracking-wider">
-                  <Compass className="w-3.5 h-3.5 text-amber-400" /> BiteGuide
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-black uppercase tracking-wider">
+                  <Compass className="w-3.5 h-3.5 text-brand-600" /> BiteGuide
                 </span>
-                <span className="text-[11px] text-slate-400 font-semibold">
+                <span className="text-[11px] text-stone-500 font-semibold">
                   Synthesized by Gemma 2 from {data.source_count || 'multiple'} web & video sources
                 </span>
               </div>
-              <h2 className="text-2xl font-black text-white tracking-tight">
+              <h2 className="heading-h2">
                 What People Actually Recommend at {restaurant.name}
               </h2>
-              <p className="text-xs text-slate-300 italic">
+              <p className="body-small text-stone-500 italic">
                 “We searched the web. Here’s what people actually recommend.”
               </p>
             </div>
@@ -185,13 +185,13 @@ export default function BiteGuideSection({ restaurant, city }) {
                 onClick={fetchGuide}
                 disabled={loading}
                 title="Refresh web search"
-                className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 transition-colors"
+                className="p-2 rounded-xl bg-cream-50 hover:bg-cream-100 border border-cream-200 text-stone-600 transition-colors"
               >
-                <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-amber-400' : ''}`} />
+                <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-brand-500' : ''}`} />
               </button>
               <button
                 onClick={handleToggle}
-                className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold text-xs flex items-center gap-1 transition-colors"
+                className="px-3 py-1.5 rounded-xl bg-cream-50 hover:bg-cream-100 border border-cream-200 text-stone-700 font-bold text-xs flex items-center gap-1 transition-colors"
               >
                 <span>Collapse</span>
                 <ChevronUp className="w-4 h-4" />
@@ -201,13 +201,13 @@ export default function BiteGuideSection({ restaurant, city }) {
 
           {/* Web Consensus Summary */}
           {data.summary && (
-            <div className="glass-card rounded-2xl p-4 md:p-5 border border-purple-500/20 bg-purple-950/20 flex items-start gap-3">
-              <Sparkles className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+            <div className="bg-gradient-to-r from-cream-50 to-teal-50/40 rounded-2xl p-4 md:p-5 border border-teal-200/80 flex items-start gap-3">
+              <Sparkles className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
               <div className="space-y-1">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-purple-300">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-teal-800">
                   Critic & Diner Consensus
                 </div>
-                <p className="text-xs md:text-sm text-slate-200 leading-relaxed font-medium">
+                <p className="body-text text-stone-700 font-medium">
                   {data.summary}
                 </p>
               </div>
@@ -217,11 +217,11 @@ export default function BiteGuideSection({ restaurant, city }) {
           {/* Top Recommended Dishes Grid */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Utensils className="w-4 h-4 text-amber-400" />
+              <h3 className="heading-h3 flex items-center gap-2 text-stone-900">
+                <Utensils className="w-4 h-4 text-brand-500" />
                 <span>Top Recommended Dishes</span>
               </h3>
-              <span className="text-[11px] text-slate-400 font-medium">
+              <span className="text-[11px] text-stone-500 font-medium">
                 Grounded in web reviews & menu data
               </span>
             </div>
@@ -230,39 +230,39 @@ export default function BiteGuideSection({ restaurant, city }) {
               {data.top_dishes?.map((dish, i) => (
                 <div 
                   key={i} 
-                  className="glass-card rounded-2xl overflow-hidden border border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between p-4 space-y-3 bg-slate-900/80"
+                  className="bg-white rounded-2xl overflow-hidden border border-cream-200 hover:border-cream-300 shadow-soft hover:shadow-md transition-all flex flex-col justify-between p-4 space-y-3"
                 >
                   <div className="flex gap-4">
                     {dish.image_url && (
                       <img 
                         src={dish.image_url} 
                         alt={dish.name} 
-                        className="w-20 h-20 rounded-xl object-cover shrink-0 border border-slate-800"
+                        className="w-20 h-20 rounded-xl object-cover shrink-0 border border-cream-200"
                       />
                     )}
                     <div className="space-y-1.5 flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
                         {getStrengthBadge(dish.recommendation_strength)}
                         {dish.price && (
-                          <span className="text-xs font-mono font-bold text-emerald-400 px-2 py-0.5 rounded-md bg-emerald-950/50 border border-emerald-800/40">
+                          <span className="text-xs font-mono font-bold text-teal-700 px-2 py-0.5 rounded-md bg-teal-50 border border-teal-200">
                             {dish.price}
                           </span>
                         )}
                       </div>
                       
-                      <h4 className="text-sm font-black text-white truncate">
+                      <h4 className="text-sm font-black text-stone-900 truncate">
                         {dish.name}
                       </h4>
                       
-                      <p className="text-xs text-slate-300 leading-snug line-clamp-2">
+                      <p className="text-xs text-stone-600 leading-snug line-clamp-2">
                         {dish.why_try_it}
                       </p>
                     </div>
                   </div>
 
                   {/* Footer with citation & links */}
-                  <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
-                    <span className="text-slate-400">
+                  <div className="pt-2 border-t border-cream-200 flex items-center justify-between text-[11px] text-stone-500">
+                    <span>
                       {dish.mention_count ? `Cited in ${dish.mention_count}+ reviews` : 'Consensus favorite'}
                     </span>
                     {dish.source_links && dish.source_links.length > 0 && (
@@ -270,7 +270,7 @@ export default function BiteGuideSection({ restaurant, city }) {
                         href={dish.source_links[0]}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1 text-brand-400 hover:text-brand-300 transition-colors font-medium"
+                        className="inline-flex items-center gap-1 text-brand-600 hover:text-brand-700 transition-colors font-medium"
                       >
                         <span>Review source</span>
                         <ExternalLink className="w-3 h-3" />
@@ -284,19 +284,19 @@ export default function BiteGuideSection({ restaurant, city }) {
 
           {/* Tasting Menu or Graceful "Most Recommended Dishes" Fallback */}
           {data.tasting_menu && (
-            <div className="glass-card rounded-2xl p-5 border border-indigo-500/20 bg-indigo-950/20 space-y-3">
+            <div className="bg-cream-50/70 rounded-2xl p-5 border border-cream-200 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <ChefHat className="w-4 h-4 text-indigo-400" />
-                  <h4 className="text-sm font-bold text-white">
+                  <ChefHat className="w-4 h-4 text-teal-600" />
+                  <h4 className="text-sm font-bold text-stone-900">
                     {data.tasting_menu.title || (data.tasting_menu.has_tasting_menu ? "Chef's Tasting Menu" : "Most Recommended Dishes")}
                   </h4>
                 </div>
-                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-indigo-900/60 text-indigo-200 border border-indigo-700/50">
+                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200">
                   {data.tasting_menu.has_tasting_menu ? "Tasting Menu" : "Curated Selection"}
                 </span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-stone-600 leading-relaxed">
                 {data.tasting_menu.description}
               </p>
               {data.tasting_menu.items && (
@@ -304,7 +304,7 @@ export default function BiteGuideSection({ restaurant, city }) {
                   {data.tasting_menu.items.map((item, idx) => (
                     <span 
                       key={idx} 
-                      className="text-xs font-semibold px-3 py-1 rounded-lg bg-slate-800/80 text-slate-200 border border-slate-700"
+                      className="text-xs font-semibold px-3 py-1 rounded-lg bg-white text-stone-700 border border-cream-200 shadow-xs"
                     >
                       {item}
                     </span>
@@ -316,10 +316,10 @@ export default function BiteGuideSection({ restaurant, city }) {
 
           {/* Conflict Notes Banner */}
           {data.conflict_notes && (
-            <div className="glass-card rounded-xl p-3.5 border border-amber-500/30 bg-amber-950/20 flex items-start gap-2.5 text-xs text-amber-200">
-              <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+            <div className="rounded-xl p-3.5 border border-amber-200 bg-amber-50 flex items-start gap-2.5 text-xs text-amber-900">
+              <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
               <div>
-                <span className="font-bold text-amber-300">Sources disagree: </span>
+                <span className="font-bold text-amber-800">Sources disagree: </span>
                 <span>{data.conflict_notes}</span>
               </div>
             </div>
@@ -329,11 +329,11 @@ export default function BiteGuideSection({ restaurant, city }) {
           {data.youtube_reviews && data.youtube_reviews.length > 0 && (
             <div className="space-y-3 pt-2">
               <div className="flex items-center justify-between">
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <h3 className="heading-h3 flex items-center gap-2 text-stone-900">
                   <YouTubeIcon className="w-4 h-4 text-rose-500" />
                   <span>Watch Reviews & Tasting Vlogs</span>
                 </h3>
-                <span className="text-[11px] text-slate-400 font-medium">
+                <span className="body-caption text-stone-500 font-medium">
                   Verified video reviews on YouTube
                 </span>
               </div>
@@ -345,9 +345,9 @@ export default function BiteGuideSection({ restaurant, city }) {
                     href={video.link}
                     target="_blank"
                     rel="noreferrer"
-                    className="group glass-card rounded-xl overflow-hidden border border-slate-800 hover:border-rose-500/40 transition-all flex flex-col justify-between bg-slate-900/60"
+                    className="group bg-white rounded-xl overflow-hidden border border-cream-200 hover:border-brand-300 shadow-soft hover:shadow-md transition-all flex flex-col justify-between"
                   >
-                    <div className="relative aspect-video w-full bg-slate-950 overflow-hidden">
+                    <div className="relative aspect-video w-full bg-cream-100 overflow-hidden">
                       {video.thumbnail ? (
                         <img 
                           src={video.thumbnail} 
@@ -355,28 +355,28 @@ export default function BiteGuideSection({ restaurant, city }) {
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-slate-900 text-slate-600">
+                        <div className="w-full h-full flex items-center justify-center bg-cream-100 text-stone-400">
                           <YouTubeIcon className="w-8 h-8 text-rose-500" />
                         </div>
                       )}
-                      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-                        <div className="w-10 h-10 rounded-full bg-rose-600/90 group-hover:bg-rose-600 flex items-center justify-center text-white shadow-lg transition-transform group-hover:scale-110">
+                      <div className="absolute inset-0 bg-stone-900/20 group-hover:bg-stone-900/10 transition-colors flex items-center justify-center">
+                        <div className="w-10 h-10 rounded-full bg-rose-600 group-hover:bg-rose-700 flex items-center justify-center text-white shadow-soft transition-transform group-hover:scale-110">
                           <Play className="w-4 h-4 fill-white ml-0.5" />
                         </div>
                       </div>
                       {video.duration && (
-                        <span className="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-black/80 text-[10px] font-mono text-white font-semibold">
+                        <span className="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-black/75 text-[10px] font-mono text-white font-semibold">
                           {video.duration}
                         </span>
                       )}
                     </div>
 
                     <div className="p-3 space-y-1">
-                      <h4 className="text-xs font-bold text-white line-clamp-2 group-hover:text-rose-300 transition-colors">
+                      <h4 className="text-xs font-bold text-stone-900 line-clamp-2 group-hover:text-brand-600 transition-colors">
                         {video.title}
                       </h4>
-                      <div className="flex items-center justify-between text-[10px] text-slate-400 pt-1">
-                        <span className="font-semibold text-slate-300 truncate max-w-[120px]">{video.channel}</span>
+                      <div className="flex items-center justify-between text-[10px] text-stone-500 pt-1">
+                        <span className="font-semibold text-stone-700 truncate max-w-[120px]">{video.channel}</span>
                         {video.views && <span>{video.views}</span>}
                       </div>
                     </div>

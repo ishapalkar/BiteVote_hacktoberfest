@@ -103,16 +103,16 @@ export default function PreferencesModal({ isOpen, onClose, currentPreferences, 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
-      <div className="glass-panel w-full max-w-xl rounded-2xl border border-slate-700/80 shadow-2xl overflow-hidden my-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/40 backdrop-blur-md overflow-y-auto animate-fadeIn">
+      <div className="glass-panel w-full max-w-xl rounded-3xl border border-cream-300 shadow-2xl overflow-hidden my-6 bg-white">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-800 bg-slate-900/60 flex items-center justify-between">
+        <div className="px-6 py-4 border-b border-cream-200 bg-cream-50/70 flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-bold text-white flex items-center gap-2">
-              <Sliders className="w-4 h-4 text-brand-400" />
+            <h2 className="heading-h3 flex items-center gap-2 text-stone-900">
+              <Sliders className="w-4 h-4 text-brand-500" />
               <span>{participantName ? `${participantName}'s Food Profile` : 'Your Food Preferences'}</span>
             </h2>
-            <p className="text-xs text-slate-400">Hard dietary constraints are strictly filtered in Python before AI scoring.</p>
+            <p className="body-small text-stone-500">Hard dietary constraints are strictly filtered in Python before AI scoring.</p>
           </div>
         </div>
 
@@ -120,10 +120,10 @@ export default function PreferencesModal({ isOpen, onClose, currentPreferences, 
         <form onSubmit={handleSubmit} className="p-6 space-y-6 max-h-[75vh] overflow-y-auto">
           {/* Dietary Restrictions */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-emerald-400 mb-2 flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5" />
+            <label className="block text-xs font-bold uppercase tracking-wider text-teal-700 mb-2 flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-teal-600" />
               <span>Dietary Requirements</span>
-              <span className="text-[10px] text-slate-400 font-normal lowercase">(enforced deterministically)</span>
+              <span className="text-[10px] text-stone-400 font-normal lowercase">(enforced deterministically)</span>
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
               {DIETARY_FIELDS.map((d) => {
@@ -136,15 +136,15 @@ export default function PreferencesModal({ isOpen, onClose, currentPreferences, 
                     onClick={() => toggleDietary(d.key)}
                     className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold border transition-all ${
                       active
-                        ? 'bg-emerald-950/60 border-emerald-500 text-emerald-300 shadow-sm shadow-emerald-950'
-                        : 'bg-slate-900/80 border-slate-800 text-slate-300 hover:border-slate-700'
+                        ? 'bg-teal-50 border-teal-500 text-teal-800 shadow-sm'
+                        : 'bg-cream-50/60 border-cream-200 text-stone-700 hover:border-cream-300'
                     }`}
                   >
                     <span className="flex items-center gap-2 truncate">
-                      <IconComponent className="w-3.5 h-3.5 shrink-0 text-slate-400" />
+                      <IconComponent className="w-3.5 h-3.5 shrink-0 text-stone-400" />
                       <span className="truncate">{d.label}</span>
                     </span>
-                    {active && <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 ml-1" />}
+                    {active && <Check className="w-3.5 h-3.5 text-teal-600 shrink-0 ml-1" />}
                   </button>
                 );
               })}
@@ -153,7 +153,7 @@ export default function PreferencesModal({ isOpen, onClose, currentPreferences, 
 
           {/* Cravings */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-brand-400 mb-2">
+            <label className="block text-xs font-bold uppercase tracking-wider text-brand-600 mb-2">
               Cuisines & Specialties
             </label>
             <div className="flex flex-wrap gap-1.5">
@@ -166,8 +166,8 @@ export default function PreferencesModal({ isOpen, onClose, currentPreferences, 
                     onClick={() => toggleCraving(c)}
                     className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                       selected
-                        ? 'bg-brand-500 text-white font-semibold shadow-sm shadow-orange-950 scale-105'
-                        : 'bg-slate-800/90 text-slate-300 hover:bg-slate-700 border border-slate-700/60'
+                        ? 'bg-brand-500 text-white font-bold shadow-soft scale-105'
+                        : 'bg-cream-50 text-stone-700 hover:bg-cream-100 border border-cream-300'
                     }`}
                   >
                     {c}
@@ -178,12 +178,12 @@ export default function PreferencesModal({ isOpen, onClose, currentPreferences, 
           </div>
 
           {/* Budget in INR (₹) */}
-          <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-3">
+          <div className="p-4 rounded-2xl bg-cream-50/80 border border-cream-200 space-y-3">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1">
-                <IndianRupee className="w-3.5 h-3.5" /> Budget Per Person
+              <label className="text-xs font-bold uppercase tracking-wider text-stone-800 flex items-center gap-1">
+                <IndianRupee className="w-3.5 h-3.5 text-brand-500" /> Budget Per Person
               </label>
-              <span className="text-xs font-mono font-bold text-amber-300">
+              <span className="text-xs font-mono font-bold text-brand-600">
                 ₹{budgetMin} – ₹{budgetMax}
               </span>
             </div>
@@ -200,10 +200,10 @@ export default function PreferencesModal({ isOpen, onClose, currentPreferences, 
                   key={b.tier}
                   type="button"
                   onClick={() => handleBudgetTierChange(b.tier)}
-                  className={`p-2 rounded-lg text-center transition-all ${
+                  className={`p-2 rounded-xl text-center transition-all ${
                     budgetTier === b.tier
-                      ? 'bg-amber-500 text-slate-950 font-black shadow-glow scale-105'
-                      : 'bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700'
+                      ? 'bg-brand-500 text-white font-black shadow-soft scale-105'
+                      : 'bg-white text-stone-700 hover:bg-cream-100 border border-cream-300'
                   }`}
                 >
                   <div className="text-xs font-bold">{b.tier}</div>
@@ -221,9 +221,9 @@ export default function PreferencesModal({ isOpen, onClose, currentPreferences, 
                 step="50"
                 value={budgetMax}
                 onChange={(e) => setBudgetMax(parseInt(e.target.value))}
-                className="w-full accent-amber-500"
+                className="w-full accent-brand-500"
               />
-              <div className="flex justify-between text-[10px] text-slate-400 mt-1">
+              <div className="flex justify-between text-[10px] text-stone-500 mt-1">
                 <span>Budget ceiling: ₹{budgetMax} per person</span>
                 <span>(Group Average Target)</span>
               </div>
@@ -232,13 +232,13 @@ export default function PreferencesModal({ isOpen, onClose, currentPreferences, 
 
           {/* Desired Vibe */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
+            <label className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-2">
               Ambience & Vibe
             </label>
             <select
               value={vibe}
               onChange={(e) => setVibe(e.target.value)}
-              className="w-full px-3 py-2.5 rounded-lg bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-brand-500"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-cream-50/60 border border-cream-300 text-stone-800 text-xs focus:outline-none focus:border-brand-500"
             >
               {VIBE_OPTIONS.map((v) => (
                 <option key={v} value={v}>{v}</option>
@@ -248,7 +248,7 @@ export default function PreferencesModal({ isOpen, onClose, currentPreferences, 
 
           {/* Dealbreakers / Dislikes */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-rose-400 mb-2">
+            <label className="block text-xs font-bold uppercase tracking-wider text-rose-600 mb-2">
               Dislikes / Exclusions
             </label>
             <div className="flex flex-wrap gap-1.5">
@@ -259,10 +259,10 @@ export default function PreferencesModal({ isOpen, onClose, currentPreferences, 
                     key={d}
                     type="button"
                     onClick={() => toggleDislike(d)}
-                    className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
+                    className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
                       selected
-                        ? 'bg-rose-950/80 border border-rose-500 text-rose-300 font-semibold'
-                        : 'bg-slate-800/80 text-slate-400 hover:bg-slate-750 border border-slate-750'
+                        ? 'bg-rose-50 border border-rose-300 text-rose-700 font-bold'
+                        : 'bg-cream-50 text-stone-600 hover:bg-cream-100 border border-cream-200'
                     }`}
                   >
                     ✕ {d}
@@ -273,19 +273,19 @@ export default function PreferencesModal({ isOpen, onClose, currentPreferences, 
           </div>
 
           {/* Buttons */}
-          <div className="pt-2 flex items-center justify-end gap-3 border-t border-slate-800">
+          <div className="pt-2 flex items-center justify-end gap-3 border-t border-cream-200">
             {onClose && (
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 rounded-xl text-slate-400 hover:text-white text-xs font-semibold"
+                className="px-4 py-2 rounded-xl text-stone-500 hover:text-stone-800 text-xs font-semibold"
               >
                 Cancel
               </button>
             )}
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-brand-500 to-amber-500 hover:from-brand-600 hover:to-amber-600 text-white font-bold text-xs shadow-glow transition-all"
+              className="px-6 py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold text-xs shadow-soft transition-all"
             >
               Lock In Profile & Save →
             </button>

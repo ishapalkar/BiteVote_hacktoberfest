@@ -13,14 +13,14 @@ export default function RestaurantModal({ restaurant, onClose }) {
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-      <div className="glass-panel w-full max-w-lg rounded-2xl border border-slate-700 shadow-2xl overflow-hidden animate-fadeIn">
-        <div className="relative h-48 w-full bg-slate-900">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-sm animate-fadeIn">
+      <div className="bg-white w-full max-w-lg rounded-2xl border border-cream-200 shadow-2xl overflow-hidden animate-fadeIn">
+        <div className="relative h-48 w-full bg-cream-100">
           <img src={restaurant.image_url} alt={restaurant.name} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-stone-950/70 via-stone-950/20 to-transparent" />
           <button
             onClick={onClose}
-            className="absolute top-3 right-3 p-1.5 rounded-full bg-slate-900/80 text-slate-300 hover:text-white border border-slate-700 transition-colors"
+            className="absolute top-3 right-3 p-1.5 rounded-full bg-white/80 hover:bg-white text-stone-700 border border-cream-200 shadow-soft transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -31,37 +31,37 @@ export default function RestaurantModal({ restaurant, onClose }) {
               )}
               <span>{restaurant.name}</span>
             </h2>
-            <div className="text-xs text-brand-300 font-semibold">{restaurant.cuisine} • {restaurant.locality || restaurant.city}</div>
+            <div className="text-xs text-amber-200 font-semibold">{restaurant.cuisine} • {restaurant.locality || restaurant.city}</div>
           </div>
         </div>
 
-        <div className="p-5 space-y-4 max-h-[60vh] overflow-y-auto">
+        <div className="p-5 space-y-4 max-h-[60vh] overflow-y-auto bg-white">
           <div className="flex items-center justify-between text-xs">
-            <span className="font-bold text-amber-300">
+            <span className="font-bold text-teal-700">
               ₹{restaurant.cost_per_person_inr}/person (₹{restaurant.cost_for_two_inr} for two)
             </span>
-            <span className="text-slate-400">
+            <span className="text-stone-500">
               {restaurant.rating}★ ({restaurant.review_count}+ reviews)
             </span>
           </div>
 
-          <p className="text-xs text-slate-300 leading-relaxed">
+          <p className="text-xs text-stone-600 leading-relaxed">
             {restaurant.description}
           </p>
 
-          <div className="flex items-center gap-2 text-xs text-slate-400">
-            <MapPin className="w-4 h-4 text-rose-400 shrink-0" />
+          <div className="flex items-center gap-2 text-xs text-stone-500">
+            <MapPin className="w-4 h-4 text-brand-500 shrink-0" />
             <span>{restaurant.address} • {restaurant.city}</span>
           </div>
 
           {/* Dietary Compliance */}
           <div>
-            <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-400 mb-1.5 flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5" /> Dietary Standards:
+            <div className="text-[11px] font-bold uppercase tracking-wider text-teal-800 mb-1.5 flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-teal-600" /> Dietary Standards:
             </div>
             <div className="flex flex-wrap gap-1.5">
               {activeDiet.map((tag) => (
-                <span key={tag} className="px-2 py-0.5 rounded-full bg-emerald-950/70 border border-emerald-500/30 text-emerald-300 text-[10px] font-semibold">
+                <span key={tag} className="px-2 py-0.5 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-[10px] font-semibold">
                   {tag}
                 </span>
               ))}
@@ -71,17 +71,17 @@ export default function RestaurantModal({ restaurant, onClose }) {
           {/* Signature dishes with INR prices */}
           {restaurant.signature_dishes && (
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-amber-400 mb-1.5 flex items-center gap-1">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-brand-600 mb-1.5 flex items-center gap-1">
                 <Utensils className="w-3.5 h-3.5" /> Verified Menu Items:
               </div>
               <div className="space-y-2">
                 {restaurant.signature_dishes.map((dish, i) => (
-                  <div key={i} className="p-2.5 rounded-lg bg-slate-900/90 border border-slate-800 text-xs flex justify-between items-center">
+                  <div key={i} className="p-2.5 rounded-lg bg-cream-50/70 border border-cream-200 text-xs flex justify-between items-center">
                     <div>
-                      <div className="font-semibold text-slate-200">{dish.name}</div>
-                      <div className="text-[10px] text-slate-400">{dish.dietary.join(', ')}</div>
+                      <div className="font-semibold text-stone-900">{dish.name}</div>
+                      <div className="text-[10px] text-stone-500">{dish.dietary.join(', ')}</div>
                     </div>
-                    <span className="text-xs text-amber-300 font-bold shrink-0 ml-2">₹{dish.price_inr}</span>
+                    <span className="text-xs text-brand-600 font-bold shrink-0 ml-2 font-mono">₹{dish.price_inr}</span>
                   </div>
                 ))}
               </div>
@@ -90,9 +90,9 @@ export default function RestaurantModal({ restaurant, onClose }) {
 
           {/* Tags */}
           {restaurant.tags && (
-            <div className="flex flex-wrap gap-1 pt-2 border-t border-slate-800">
+            <div className="flex flex-wrap gap-1 pt-2 border-t border-cream-200">
               {restaurant.tags.map((t) => (
-                <span key={t} className="px-2 py-0.5 rounded bg-slate-800 text-slate-400 text-[10px]">
+                <span key={t} className="px-2 py-0.5 rounded bg-cream-100 text-stone-600 border border-cream-200 text-[10px]">
                   #{t}
                 </span>
               ))}

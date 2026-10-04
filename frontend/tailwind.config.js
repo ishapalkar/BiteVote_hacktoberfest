@@ -7,37 +7,50 @@ export default {
   theme: {
     extend: {
       colors: {
-        brand: {
-          50: '#fff7ed',
-          100: '#ffedd5',
-          200: '#fed7aa',
-          300: '#fdba74',
-          400: '#fb923c',
-          500: '#f97316', // Vibrant Amber/Orange
-          600: '#ea580c',
-          700: '#c2410c',
-          800: '#9a3412',
-          900: '#7c2d12',
+        cream: {
+          50: '#FDFCF9',
+          100: '#FAF6F0', // Exact appstore.png background
+          200: '#F5ECE1',
+          300: '#ECE0D0',
+          400: '#DFCEB8',
+          500: '#CDB79E',
         },
-        culinary: {
-          dark: '#0f172a',
-          surface: '#1e293b',
-          card: '#182234',
-          accent: '#10b981', // Emerald for matches/dietary safety
-          coral: '#f43f5e',  // Rose/Coral
-          purple: '#8b5cf6', // Gemma AI signature purple/violet
+        brand: {
+          50: '#FFF4F1',
+          100: '#FFE6E0',
+          200: '#FFCEBE',
+          300: '#FFAF99',
+          400: '#F58069',
+          500: '#E85D45', // Exact appstore.png 'B' Coral
+          600: '#D44A33',
+          700: '#B23824',
+          800: '#902E1E',
+          900: '#76281B',
+        },
+        teal: {
+          50: '#F0F8F7',
+          100: '#DCF0ED',
+          200: '#BCE2DD',
+          300: '#8DCBC3',
+          400: '#55ABA1',
+          500: '#278681', // Exact appstore.png 'V' Checkmark & Sparkle Teal
+          600: '#206E6A',
+          700: '#1D5A56',
+          800: '#194A47',
+          900: '#173E3C',
+        },
+        stone: {
+          850: '#23201E',
         }
       },
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
       boxShadow: {
-        'glow': '0 0 25px -5px rgba(249, 115, 22, 0.4)',
-        'ai-glow': '0 0 30px -5px rgba(139, 92, 246, 0.4)',
-      },
-      animation: {
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'bounce-subtle': 'bounce 2s infinite',
+        'soft': '0 4px 20px -2px rgba(41, 37, 36, 0.05), 0 2px 6px -1px rgba(41, 37, 36, 0.03)',
+        'card': '0 6px 24px -4px rgba(232, 93, 69, 0.07), 0 2px 8px -2px rgba(39, 134, 129, 0.04)',
+        'glow': '0 4px 24px -2px rgba(232, 93, 69, 0.25)',
+        'teal-glow': '0 4px 24px -2px rgba(39, 134, 129, 0.25)',
       }
     },
   },

@@ -30,12 +30,6 @@ export default function Header({ room, user, onLeaveRoom, dbStatus }) {
               <span className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-orange-400 via-amber-200 to-rose-400 bg-clip-text text-transparent">
                 BiteVote
               </span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-semibold tracking-wider uppercase">
-                India Edition
-              </span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-purple-900/60 text-purple-300 border border-purple-700/50 flex items-center gap-1 font-medium">
-                <Sparkles className="w-3 h-3 text-purple-400" /> Gemma 2
-              </span>
             </div>
             <p className="text-[11px] text-slate-400 font-medium hidden sm:block">AI Compromise Engine for Group Dining Decisions</p>
           </div>

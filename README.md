@@ -1,4 +1,4 @@
-# 🍽️ BiteVote (India Edition) — Vote. Match. Eat.
+# 🍽️ BiteVote — Vote. Match. Eat.
 
 > **The AI-Powered Compromise Engine that ends the 45-minute "Where should we eat?" debate forever.**  
 > Built for the **Hacktoberfest 2026 Weekend Challenge: Build for a Friend** (`#devchallenge #weekendchallenge #hf26challenge`).

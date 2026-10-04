@@ -165,6 +165,7 @@ async def decide_room(code: str, req: Optional[DecideRoomRequest] = None):
         candidates = SEED_RESTAURANTS
 
     crave_signals = req.crave_clash if req else None
+    bite_signals = req.bite_blitz if req else None
 
     participants_dict = [p.model_dump() for p in room.participants]
     decision = await generate_ai_compromise(
@@ -172,11 +173,13 @@ async def decide_room(code: str, req: Optional[DecideRoomRequest] = None):
         candidates, 
         room.votes, 
         city=room.city,
-        crave_clash_signals=crave_signals
+        crave_clash_signals=crave_signals,
+        bite_blitz=bite_signals
     )
     
     room.decision = decision
     room.crave_clash = crave_signals
+    room.bite_blitz = bite_signals
     room.status = "decided"
     
     await db.save_room(room.model_dump())

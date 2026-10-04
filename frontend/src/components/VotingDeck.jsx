@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { 
   X, Heart, Star, Sparkles, Check, ChevronRight, 
   MapPin, IndianRupee, Award, Utensils, Info, CheckCircle2, Leaf, ShieldCheck, Moon,
-  Swords, Flame, ArrowRight
+  Flame, ArrowRight, Zap, Scale
 } from 'lucide-react';
 import Avatar from './Avatar';
-import CraveClashModal from './CraveClashModal';
+import BiteBlitzModal from './BiteBlitzModal';
 
 export default function VotingDeck({ 
   restaurants, 
@@ -19,7 +19,7 @@ export default function VotingDeck({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [votes, setVotes] = useState({});
   const [hasFinishedVoting, setHasFinishedVoting] = useState(false);
-  const [showCraveClash, setShowCraveClash] = useState(false);
+  const [showBiteBlitz, setShowBiteBlitz] = useState(false);
 
   // Filter restaurants in room or by city
   let candidateRestaurants = restaurants.filter(
@@ -109,69 +109,117 @@ export default function VotingDeck({
             </div>
           </div>
 
-          {/* Subtle Optional Crave Clash Card */}
-          <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-brand-950/40 via-purple-950/30 to-slate-900 border border-brand-500/30 shadow-lg text-left space-y-2.5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-brand-400 font-bold text-xs uppercase tracking-wider">
-                <Swords className="w-3.5 h-3.5 text-brand-400" />
-                <span>Want to settle it with a game?</span>
+          {/* Agreement Check: If tied or divided, show "Too close to call?" card */}
+          {(() => {
+            // Check if top choices are tied or very close
+            const likeTally = {};
+            candidateRestaurants.forEach((r) => { likeTally[r.id] = 0; });
+            Object.values(room.votes || {}).forEach((userVotes) => {
+              Object.entries(userVotes || {}).forEach(([rId, choice]) => {
+                if (choice === 'like') likeTally[rId] = (likeTally[rId] || 0) + 1;
+                if (choice === 'superlike') likeTally[rId] = (likeTally[rId] || 0) + 2;
+              });
+            });
+            Object.entries(votes || {}).forEach(([rId, choice]) => {
+              if (choice === 'like') likeTally[rId] = (likeTally[rId] || 0) + 1;
+              if (choice === 'superlike') likeTally[rId] = (likeTally[rId] || 0) + 2;
+            });
+            const counts = Object.values(likeTally).sort((a, b) => b - a);
+            const isTooCloseToCall = counts.length >= 2 && (counts[0] - counts[1]) <= 1;
+
+            if (isTooCloseToCall) {
+              return (
+                <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-950/40 via-purple-950/30 to-slate-900 border border-amber-500/40 shadow-glow text-left space-y-3 animate-fadeIn">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-amber-400 font-black text-xs uppercase tracking-wider">
+                      <Zap className="w-4 h-4 text-amber-400 fill-amber-400" />
+                      <span>Too close to call?</span>
+                    </div>
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30">
+                      Tie-Breaker Available
+                    </span>
+                  </div>
+
+                  <div className="space-y-1">
+                    <h4 className="text-sm font-bold text-white">Settle it with a quick game.</h4>
+                    <p className="text-xs text-slate-300 leading-relaxed">
+                      Votes are neck-and-neck! Play Bite Blitz for 60 seconds — the trivia champion earns a small tie-breaker signal for Gemma's final verdict.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2.5 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setShowBiteBlitz(true)}
+                      className="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-brand-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-xs shadow-md transition-all flex items-center justify-center gap-2"
+                    >
+                      <Zap className="w-3.5 h-3.5 fill-slate-950" />
+                      <span>Play Bite Blitz</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => onTriggerDecide()}
+                      disabled={loadingDecide}
+                      className="py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-750 border border-slate-700 text-slate-300 hover:text-white font-semibold text-xs transition-all flex items-center gap-1.5 disabled:opacity-50"
+                    >
+                      <span>Skip → See Results</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  <p className="text-[10px] text-slate-400 italic">
+                    “Bite Blitz can break a tie, but it can never override someone's dietary boundaries.”
+                  </p>
+                </div>
+              );
+            }
+
+            return (
+              <div className="mb-6 space-y-3">
+                <button
+                  onClick={() => onTriggerDecide()}
+                  disabled={loadingDecide}
+                  className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:from-purple-500 hover:to-amber-400 text-white font-black text-base shadow-ai-glow transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  <Sparkles className="w-5 h-5 text-amber-200" />
+                  <span>{loadingDecide ? 'Gemma is Arbitrating Compromise...' : 'Summon Gemma AI Verdict!'}</span>
+                </button>
+
+                <div className="text-center pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setShowBiteBlitz(true)}
+                    className="text-xs text-amber-400 hover:text-amber-300 font-semibold inline-flex items-center gap-1.5 transition-colors"
+                  >
+                    <Zap className="w-3.5 h-3.5" />
+                    <span>Bite Blitz — Got 60 seconds? Play while the group decides.</span>
+                  </button>
+                </div>
               </div>
-              <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-brand-500/10 text-brand-300 border border-brand-500/20">
-                Optional 20s Clash
-              </span>
-            </div>
+            );
+          })()}
 
-            <p className="text-xs text-slate-300 leading-relaxed">
-              Resolve remaining preference ties with 4 rapid micro-duels (Pizza vs Noodles, Spicy vs Mild, etc.).
-            </p>
-
-            <div className="flex items-center gap-2.5 pt-1">
-              <button
-                type="button"
-                onClick={() => setShowCraveClash(true)}
-                className="flex-1 py-2.5 px-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-xs shadow-md transition-all flex items-center justify-center gap-1.5"
-              >
-                <Flame className="w-3.5 h-3.5" />
-                <span>Play Crave Clash</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => onTriggerDecide()}
-                disabled={loadingDecide}
-                className="py-2.5 px-3.5 rounded-xl bg-slate-800 hover:bg-slate-750 border border-slate-700 text-slate-300 hover:text-white font-semibold text-xs transition-all flex items-center gap-1 disabled:opacity-50"
-              >
-                <span>Skip → See Results</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
-
-          {/* Trigger Gemma AI Compromise Engine */}
-          <button
-            onClick={() => onTriggerDecide()}
-            disabled={loadingDecide}
-            className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:from-purple-500 hover:to-amber-400 text-white font-black text-base shadow-ai-glow transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-          >
-            <Sparkles className="w-5 h-5 text-amber-200" />
-            <span>{loadingDecide ? 'Gemma is Arbitrating Compromise...' : 'Summon Gemma AI Verdict!'}</span>
-          </button>
-          
           <p className="text-[11px] text-slate-400 mt-2">
             Gemma executes deterministic hard-constraint filtering before resolving soft preference conflicts.
           </p>
 
-          {/* Crave Clash Modal */}
-          {showCraveClash && (
-            <CraveClashModal
-              isOpen={showCraveClash}
-              onClose={() => setShowCraveClash(false)}
-              onApplySignals={(signals) => {
-                setShowCraveClash(false);
-                onTriggerDecide({ crave_clash: signals });
+          {/* Bite Blitz Modal */}
+          {showBiteBlitz && (
+            <BiteBlitzModal
+              isOpen={showBiteBlitz}
+              onClose={() => setShowBiteBlitz(false)}
+              onApplyTieBreak={(blitzData) => {
+                setShowBiteBlitz(false);
+                onTriggerDecide({ bite_blitz: blitzData });
+              }}
+              onSkipTieBreak={() => {
+                setShowBiteBlitz(false);
+                onTriggerDecide();
               }}
               room={room}
               currentUser={currentUser}
+              restaurants={candidateRestaurants}
               loading={loadingDecide}
             />
           )}

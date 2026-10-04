@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { 
   Trophy, Sparkles, Star, MapPin, ExternalLink, Share2, 
-  RotateCcw, Check, ShieldCheck, HeartHandshake, Utensils, IndianRupee, Leaf, Swords
+  RotateCcw, Check, ShieldCheck, HeartHandshake, Utensils, IndianRupee, Leaf, Swords, Zap
 } from 'lucide-react';
 import Avatar from './Avatar';
 import BiteGuideSection from './BiteGuideSection';
+import BiteBlitzModal from './BiteBlitzModal';
 
 export default function ResultView({ room, restaurants, onReset, currentUser }) {
   const [copiedSummary, setCopiedSummary] = useState(false);
+  const [showRematchBlitz, setShowRematchBlitz] = useState(false);
   const decision = room.decision;
 
   const winner = restaurants.find((r) => r.id === decision?.winner_id) || {
@@ -187,6 +189,23 @@ export default function ResultView({ room, restaurants, onReset, currentUser }) 
               "{decision.verdict_summary}"
             </p>
 
+            {/* Bite Blitz Tie-Breaker Details */}
+            {room.bite_blitz && room.bite_blitz.played && (
+              <div className="pt-2.5 space-y-1.5 border-t border-purple-900/40">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-[11px] font-black text-amber-400 flex items-center gap-1.5">
+                    <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400" /> Bite Blitz Tie-Breaker:
+                  </span>
+                  <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30">
+                    Champion: {room.bite_blitz.winner_name} (+{room.bite_blitz.tie_break_boost || 7.5} pts applied to {room.bite_blitz.winner_preferred_restaurant_name})
+                  </span>
+                </div>
+                <p className="text-[10px] text-slate-300 italic">
+                  “Bite Blitz can break a tie, but it can never override someone's dietary boundaries.”
+                </p>
+              </div>
+            )}
+
             {room.crave_clash && Object.keys(room.crave_clash).length > 0 && (
               <div className="pt-2 flex flex-wrap items-center gap-2">
                 <span className="text-[11px] font-bold text-amber-400 flex items-center gap-1">
@@ -310,7 +329,15 @@ export default function ResultView({ room, restaurants, onReset, currentUser }) 
       )}
 
       {/* Bottom Controls */}
-      <div className="pt-4 flex items-center justify-center gap-4">
+      <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
+        <button
+          onClick={() => setShowRematchBlitz(true)}
+          className="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 text-slate-950 font-bold text-xs flex items-center gap-2 shadow-sm transition-all"
+        >
+          <Zap className="w-4 h-4 fill-slate-950" />
+          <span>Play Bite Blitz (60s Trivia)</span>
+        </button>
+
         <button
           onClick={onReset}
           className="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-750 border border-slate-700 text-slate-200 font-bold text-xs flex items-center gap-2 transition-colors"
@@ -319,6 +346,19 @@ export default function ResultView({ room, restaurants, onReset, currentUser }) 
           <span>Vote Another Meal / Reset Room</span>
         </button>
       </div>
+
+      {/* Bite Blitz Rematch Modal */}
+      {showRematchBlitz && (
+        <BiteBlitzModal
+          isOpen={showRematchBlitz}
+          onClose={() => setShowRematchBlitz(false)}
+          onApplyTieBreak={() => setShowRematchBlitz(false)}
+          onSkipTieBreak={() => setShowRematchBlitz(false)}
+          room={room}
+          currentUser={currentUser}
+          restaurants={restaurants}
+        />
+      )}
     </div>
   );
 }

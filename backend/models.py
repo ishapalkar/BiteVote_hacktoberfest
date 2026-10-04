@@ -146,6 +146,7 @@ class VoteSubmitRequest(BaseModel):
 
 class DecideRoomRequest(BaseModel):
     crave_clash: Optional[Dict[str, Any]] = None
+    bite_blitz: Optional[Dict[str, Any]] = None
 
 class Room(BaseModel):
     code: str
@@ -157,6 +158,7 @@ class Room(BaseModel):
     votes: Dict[str, Dict[str, str]] = Field(default_factory=dict)
     restaurant_ids: List[str] = Field(default_factory=list)
     crave_clash: Optional[Dict[str, Any]] = None
+    bite_blitz: Optional[Dict[str, Any]] = None
     decision: Optional[AIDecision] = None
     created_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
     updated_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat())

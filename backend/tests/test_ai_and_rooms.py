@@ -258,4 +258,57 @@ async def test_biteguide_endpoint():
         assert res_cached.status_code == 200
         assert res_cached.json()["cached"] is True
 
+@pytest.mark.asyncio
+async def test_bite_blitz_tie_break_signal_flow():
+    """Verify that Bite Blitz tie-breaker breaks close ties without overriding hard dietary constraints."""
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        # 1. Create room
+        create_res = await ac.post("/api/rooms", json={
+            "name": "Bite Blitz Tie Break Test",
+            "host_name": "Rohan",
+            "host_avatar": "food-samosa",
+            "city": "Mumbai"
+        })
+        assert create_res.status_code == 200
+        room_data = create_res.json()
+        code = room_data["code"]
+        host_id = room_data["participants"][0]["id"]
+
+        # 2. Strict Jain preference
+        await ac.post(f"/api/rooms/{code}/preferences?participant_id={host_id}", json={
+            "dietary": {"pure_veg": True, "jain": True, "vegetarian": True},
+            "cravings": ["Maharashtrian"],
+            "budget_min": 250,
+            "budget_max": 500
+        })
+
+        # 3. Submit votes tied between mum-1 and mum-2
+        await ac.post(f"/api/rooms/{code}/vote", json={
+            "participant_id": host_id,
+            "votes": {"mum-1": "like", "mum-2": "like"}
+        })
+
+        # 4. Decide with Bite Blitz tie-break signal favoring mum-2 (Aaswad)
+        decide_res = await ac.post(f"/api/rooms/{code}/decide", json={
+            "bite_blitz": {
+                "played": True,
+                "winner_name": "Rohan",
+                "winner_id": host_id,
+                "winner_preferred_restaurant_id": "mum-2",
+                "winner_preferred_restaurant_name": "Aaswad",
+                "tie_break_boost": 7.5,
+                "leaderboard": [{"name": "Rohan", "score": 2800}]
+            }
+        })
+        assert decide_res.status_code == 200
+        res_data = decide_res.json()
+        assert res_data["bite_blitz"]["played"] is True
+        assert res_data["bite_blitz"]["winner_name"] == "Rohan"
+
+        # Check winner and non-negotiable dietary boundary
+        decision = res_data["decision"]
+        from backend.restaurants_data import SEED_RESTAURANTS
+        winner = next(r for r in SEED_RESTAURANTS if r["id"] == decision["winner_id"])
+        assert winner["dietary"]["jain_available"] is True
+
 

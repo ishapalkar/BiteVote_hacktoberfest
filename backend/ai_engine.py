@@ -125,7 +125,8 @@ def calculate_preference_scores(
     participants: List[Dict[str, Any]], 
     compatible_restaurants: List[Dict[str, Any]], 
     votes: Dict[str, Dict[str, str]],
-    crave_clash_signals: Optional[Dict[str, Any]] = None
+    crave_clash_signals: Optional[Dict[str, Any]] = None,
+    bite_blitz: Optional[Dict[str, Any]] = None
 ) -> Dict[str, float]:
     """
     STAGE 2: Multi-Objective Preference Scoring.
@@ -136,6 +137,7 @@ def calculate_preference_scores(
     - Ambience / vibe
     - Individual votes
     - Ratings and distance
+    - Soft Bite Blitz mini-game tie-break signal (if played, max 5-10% boost)
     - Soft Crave Clash mini-game signals (if played)
     """
     scores = {}
@@ -224,6 +226,14 @@ def calculate_preference_scores(
             elif vibe == "restaurant" and any(k in r_cuisine or k in r_tags for k in ["thali", "family", "dining", "tandoor", "multicuisine"]):
                 score += 8.0
 
+        # 8. Optional Bite Blitz Tie-Breaker (Configurable small 5-10% boost only, never overrides dietary restrictions)
+        if bite_blitz and bite_blitz.get("played"):
+            fav_r_id = bite_blitz.get("winner_preferred_restaurant_id")
+            boost = float(bite_blitz.get("tie_break_boost", 7.5))
+            boost = max(1.0, min(10.0, boost))  # Strict clamp to ensure it only breaks ties
+            if fav_r_id and r_id == fav_r_id:
+                score += boost
+
         scores[r_id] = round(score, 1)
 
     return scores
@@ -234,7 +244,8 @@ def build_gemma_prompt(
     votes: Dict[str, Dict[str, str]], 
     scores: Dict[str, float], 
     city: str,
-    crave_clash_signals: Optional[Dict[str, Any]] = None
+    crave_clash_signals: Optional[Dict[str, Any]] = None,
+    bite_blitz: Optional[Dict[str, Any]] = None
 ) -> str:
     prompt = f"### DINING GROUP IN {city.upper()} & PARTICIPANT CONSTRAINTS:\n"
     for p in participants:
@@ -249,6 +260,15 @@ def build_gemma_prompt(
         vibe = prefs.get("vibe", "Casual")
         
         prompt += f"- {name}: Diet=[{', '.join(active_diets) or 'No restrictions'}], Cravings=[{cravings}], Dislikes=[{dislikes}], Budget=[₹{b_min}–₹{b_max}], Vibe=[{vibe}]\n"
+
+    if bite_blitz and bite_blitz.get("played"):
+        champ = bite_blitz.get("winner_name", "A player")
+        boost_spot = bite_blitz.get("winner_preferred_restaurant_name", "their choice")
+        boost_pts = bite_blitz.get("tie_break_boost", 7.5)
+        prompt += "\n### OPTIONAL BITE BLITZ TIE-BREAKER SIGNAL:\n"
+        prompt += f"- Bite Blitz Mini-Game Champion: {champ}\n"
+        prompt += f"- Champion's Favored Restaurant: {boost_spot} (received small tie-break signal: +{boost_pts} pts)\n"
+        prompt += "- Hard Rule: Bite Blitz can break a close tie between nearly equal options, but it can NEVER override someone's dietary boundaries or health restrictions.\n"
 
     if crave_clash_signals:
         prompt += "\n### OPTIONAL CRAVE CLASH SIGNALS (Soft Tie-Breaker Mini-Game Signals):\n"
@@ -328,7 +348,8 @@ def fallback_compromise_engine(
     votes: Dict[str, Dict[str, str]], 
     scores: Dict[str, float], 
     city: str,
-    crave_clash_signals: Optional[Dict[str, Any]] = None
+    crave_clash_signals: Optional[Dict[str, Any]] = None,
+    bite_blitz: Optional[Dict[str, Any]] = None
 ) -> Dict[str, Any]:
     """
     Deterministic compromise solver mirroring Gemma's reasoning logic.
@@ -421,6 +442,12 @@ def fallback_compromise_engine(
         f"and harmonizes diverse cravings without anyone having to sacrifice their dietary peace of mind."
     )
 
+    if bite_blitz and bite_blitz.get("played"):
+        champ = bite_blitz.get("winner_name", "The Bite Blitz Champion")
+        fav_name = bite_blitz.get("winner_preferred_restaurant_name", winner["name"])
+        if fav_name == winner["name"]:
+            verdict_summary += f" With votes tied closely, {champ}'s victory in Bite Blitz provided the decisive tie-breaking signal for {winner['name']}."
+
     if crave_clash_signals:
         signals_text = ", ".join([f"{k.capitalize()}: {v}" for k, v in crave_clash_signals.items() if v])
         if signals_text:
@@ -442,27 +469,50 @@ async def generate_ai_compromise(
     all_restaurants: List[Dict[str, Any]], 
     votes: Dict[str, Dict[str, str]], 
     city: str = "Mumbai",
-    crave_clash_signals: Optional[Dict[str, Any]] = None
+    crave_clash_signals: Optional[Dict[str, Any]] = None,
+    bite_blitz: Optional[Dict[str, Any]] = None
 ) -> AIDecision:
     """
     Main entrypoint for the BiteVote Gemma AI Compromise Engine.
     Pipeline:
     1. Deterministic Hard-Constraint Filter (Python)
-    2. Multi-Objective Preference Scoring
+    2. Multi-Objective Preference Scoring (with optional Bite Blitz tie-break signal)
     3. Google Gemma 2 via OpenRouter (or deterministic solver fallback)
     4. Structured Output Mapping
     """
     compatible = filter_hard_constraints(participants, all_restaurants, room_city=city)
-    scores = calculate_preference_scores(participants, compatible, votes, crave_clash_signals=crave_clash_signals)
+    scores = calculate_preference_scores(
+        participants, 
+        compatible, 
+        votes, 
+        crave_clash_signals=crave_clash_signals,
+        bite_blitz=bite_blitz
+    )
     
-    prompt = build_gemma_prompt(participants, compatible, votes, scores, city, crave_clash_signals=crave_clash_signals)
+    prompt = build_gemma_prompt(
+        participants, 
+        compatible, 
+        votes, 
+        scores, 
+        city, 
+        crave_clash_signals=crave_clash_signals,
+        bite_blitz=bite_blitz
+    )
     gemma_output = await call_gemma_api(prompt)
     used_fallback = False
 
     compatible_ids = {r["id"] for r in compatible}
     if not gemma_output or gemma_output.get("winner_id") not in compatible_ids:
         logger.info("Utilizing deterministic Gemma compromise solver.")
-        gemma_output = fallback_compromise_engine(participants, compatible, votes, scores, city, crave_clash_signals=crave_clash_signals)
+        gemma_output = fallback_compromise_engine(
+            participants, 
+            compatible, 
+            votes, 
+            scores, 
+            city, 
+            crave_clash_signals=crave_clash_signals,
+            bite_blitz=bite_blitz
+        )
         used_fallback = True
 
     restaurant_map = {r["id"]: r for r in compatible}

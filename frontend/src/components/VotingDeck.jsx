@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { 
   X, Heart, Star, Sparkles, Check, ChevronRight, 
-  MapPin, IndianRupee, Award, Utensils, Info, CheckCircle2, Leaf, ShieldCheck, Moon 
+  MapPin, IndianRupee, Award, Utensils, Info, CheckCircle2, Leaf, ShieldCheck, Moon,
+  Swords, Flame, ArrowRight
 } from 'lucide-react';
 import Avatar from './Avatar';
+import CraveClashModal from './CraveClashModal';
 
 export default function VotingDeck({ 
   restaurants, 
@@ -17,6 +19,7 @@ export default function VotingDeck({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [votes, setVotes] = useState({});
   const [hasFinishedVoting, setHasFinishedVoting] = useState(false);
+  const [showCraveClash, setShowCraveClash] = useState(false);
 
   // Filter restaurants in room or by city
   let candidateRestaurants = restaurants.filter(
@@ -106,9 +109,47 @@ export default function VotingDeck({
             </div>
           </div>
 
+          {/* Subtle Optional Crave Clash Card */}
+          <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-brand-950/40 via-purple-950/30 to-slate-900 border border-brand-500/30 shadow-lg text-left space-y-2.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-brand-400 font-bold text-xs uppercase tracking-wider">
+                <Swords className="w-3.5 h-3.5 text-brand-400" />
+                <span>Want to settle it with a game?</span>
+              </div>
+              <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-brand-500/10 text-brand-300 border border-brand-500/20">
+                Optional 20s Clash
+              </span>
+            </div>
+
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Resolve remaining preference ties with 4 rapid micro-duels (Pizza vs Noodles, Spicy vs Mild, etc.).
+            </p>
+
+            <div className="flex items-center gap-2.5 pt-1">
+              <button
+                type="button"
+                onClick={() => setShowCraveClash(true)}
+                className="flex-1 py-2.5 px-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-xs shadow-md transition-all flex items-center justify-center gap-1.5"
+              >
+                <Flame className="w-3.5 h-3.5" />
+                <span>Play Crave Clash</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onTriggerDecide()}
+                disabled={loadingDecide}
+                className="py-2.5 px-3.5 rounded-xl bg-slate-800 hover:bg-slate-750 border border-slate-700 text-slate-300 hover:text-white font-semibold text-xs transition-all flex items-center gap-1 disabled:opacity-50"
+              >
+                <span>Skip → See Results</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+
           {/* Trigger Gemma AI Compromise Engine */}
           <button
-            onClick={onTriggerDecide}
+            onClick={() => onTriggerDecide()}
             disabled={loadingDecide}
             className="w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:from-purple-500 hover:to-amber-400 text-white font-black text-base shadow-ai-glow transition-all flex items-center justify-center gap-2 disabled:opacity-50"
           >
@@ -119,6 +160,21 @@ export default function VotingDeck({
           <p className="text-[11px] text-slate-400 mt-2">
             Gemma executes deterministic hard-constraint filtering before resolving soft preference conflicts.
           </p>
+
+          {/* Crave Clash Modal */}
+          {showCraveClash && (
+            <CraveClashModal
+              isOpen={showCraveClash}
+              onClose={() => setShowCraveClash(false)}
+              onApplySignals={(signals) => {
+                setShowCraveClash(false);
+                onTriggerDecide({ crave_clash: signals });
+              }}
+              room={room}
+              currentUser={currentUser}
+              loading={loadingDecide}
+            />
+          )}
         </div>
       </div>
     );

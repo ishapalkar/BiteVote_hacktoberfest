@@ -5,7 +5,7 @@ from typing import Optional, Dict
 from fastapi import APIRouter, HTTPException
 from backend.models import (
     Room, RoomCreateRequest, JoinRoomRequest, 
-    Participant, UserPreferences, VoteSubmitRequest, AIDecision
+    Participant, UserPreferences, VoteSubmitRequest, AIDecision, DecideRoomRequest
 )
 from backend.database import db
 from backend.restaurants_data import SEED_RESTAURANTS
@@ -150,7 +150,7 @@ async def submit_vote(code: str, req: VoteSubmitRequest):
     return room
 
 @router.post("/{code}/decide", response_model=Room)
-async def decide_room(code: str):
+async def decide_room(code: str, req: Optional[DecideRoomRequest] = None):
     room_dict = await db.get_room(code)
     if not room_dict:
         raise HTTPException(status_code=404, detail="Room not found")
@@ -164,15 +164,19 @@ async def decide_room(code: str):
     if not candidates:
         candidates = SEED_RESTAURANTS
 
+    crave_signals = req.crave_clash if req else None
+
     participants_dict = [p.model_dump() for p in room.participants]
     decision = await generate_ai_compromise(
         participants_dict, 
         candidates, 
         room.votes, 
-        city=room.city
+        city=room.city,
+        crave_clash_signals=crave_signals
     )
     
     room.decision = decision
+    room.crave_clash = crave_signals
     room.status = "decided"
     
     await db.save_room(room.model_dump())

@@ -258,12 +258,12 @@ export default function App() {
     }
   };
 
-  // Trigger Gemma Decision
-  const handleTriggerDecide = async () => {
+  // Trigger Gemma Decision (supports optional Crave Clash soft signals)
+  const handleTriggerDecide = async (extraData = null) => {
     if (!room) return;
     try {
       setLoadingDecide(true);
-      const updated = await api.decideRoom(room.code);
+      const updated = await api.decideRoom(room.code, extraData);
       setRoom(updated);
     } catch (err) {
       showError(err.message || 'Gemma arbitration encountered an issue.');

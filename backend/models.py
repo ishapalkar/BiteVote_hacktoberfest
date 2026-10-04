@@ -144,6 +144,9 @@ class VoteSubmitRequest(BaseModel):
     participant_id: str
     votes: Dict[str, str]  # restaurant_id -> "like" | "skip" | "neutral"
 
+class DecideRoomRequest(BaseModel):
+    crave_clash: Optional[Dict[str, Any]] = None
+
 class Room(BaseModel):
     code: str
     name: str
@@ -153,6 +156,8 @@ class Room(BaseModel):
     participants: List[Participant] = Field(default_factory=list)
     votes: Dict[str, Dict[str, str]] = Field(default_factory=dict)
     restaurant_ids: List[str] = Field(default_factory=list)
+    crave_clash: Optional[Dict[str, Any]] = None
     decision: Optional[AIDecision] = None
     created_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
     updated_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
+

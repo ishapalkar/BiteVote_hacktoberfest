@@ -60,9 +60,10 @@ export const api = {
       method: 'POST',
       body: JSON.stringify(data),
     }),
-  decideRoom: (code) => 
+  decideRoom: (code, data = null) => 
     request(`/api/rooms/${code.toUpperCase().trim()}/decide`, {
       method: 'POST',
+      body: data ? JSON.stringify(data) : undefined,
     }),
   resetRoom: (code) => 
     request(`/api/rooms/${code.toUpperCase().trim()}/reset`, {

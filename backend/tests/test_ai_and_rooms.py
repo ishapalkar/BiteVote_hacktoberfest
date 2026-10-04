@@ -184,3 +184,55 @@ async def test_legacy_room_schema_compatibility():
         assert suggestion["dish"] == "Panki Chatni"
         assert suggestion["price_inr"] == 240
 
+@pytest.mark.asyncio
+async def test_crave_clash_signals_flow():
+    """Verify that Crave Clash soft signals are integrated without overriding hard dietary boundaries."""
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+        # Create room with Jain participant
+        create_res = await ac.post("/api/rooms", json={
+            "name": "Crave Clash Test Room",
+            "host_name": "Sarah",
+            "host_avatar": "food-samosa",
+            "city": "Mumbai"
+        })
+        assert create_res.status_code == 200
+        room_data = create_res.json()
+        code = room_data["code"]
+        host_id = room_data["participants"][0]["id"]
+
+        # Sarah is strict Jain
+        await ac.post(f"/api/rooms/{code}/preferences?participant_id={host_id}", json={
+            "dietary": {"pure_veg": True, "jain": True, "vegetarian": True},
+            "cravings": ["Maharashtrian"],
+            "budget_min": 300,
+            "budget_max": 500
+        })
+
+        # Submit votes
+        await ac.post(f"/api/rooms/{code}/vote", json={
+            "participant_id": host_id,
+            "votes": {"mum-1": "like", "mum-2": "like", "mum-3": "like"}
+        })
+
+        # Call decide with Crave Clash soft signals favoring pizza & casual
+        decide_res = await ac.post(f"/api/rooms/{code}/decide", json={
+            "crave_clash": {
+                "comfort": "pizza",
+                "flavor": "spicy",
+                "wallet": "budget",
+                "vibe": "cafe"
+            }
+        })
+        assert decide_res.status_code == 200
+        res_data = decide_res.json()
+        assert res_data["crave_clash"]["comfort"] == "pizza"
+
+        decision = res_data["decision"]
+        assert decision["match_score"] >= 80
+
+        # Non-negotiable constraint: winner MUST support Jain despite game signals!
+        from backend.restaurants_data import SEED_RESTAURANTS
+        winner = next(r for r in SEED_RESTAURANTS if r["id"] == decision["winner_id"])
+        assert winner["dietary"]["jain_available"] is True
+
+

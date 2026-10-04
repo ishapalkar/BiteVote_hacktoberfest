@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { 
   Trophy, Sparkles, Star, MapPin, ExternalLink, Share2, 
-  RotateCcw, Check, ShieldCheck, HeartHandshake, Utensils, IndianRupee, Leaf 
+  RotateCcw, Check, ShieldCheck, HeartHandshake, Utensils, IndianRupee, Leaf, Swords
 } from 'lucide-react';
 import Avatar from './Avatar';
 
@@ -185,6 +185,19 @@ export default function ResultView({ room, restaurants, onReset, currentUser }) 
             <p className="text-sm md:text-base text-slate-200 italic font-medium leading-relaxed">
               "{decision.verdict_summary}"
             </p>
+
+            {room.crave_clash && Object.keys(room.crave_clash).length > 0 && (
+              <div className="pt-2 flex flex-wrap items-center gap-2">
+                <span className="text-[11px] font-bold text-amber-400 flex items-center gap-1">
+                  <Swords className="w-3.5 h-3.5" /> Crave Clash Signals:
+                </span>
+                {Object.entries(room.crave_clash).map(([clash, choice]) => (
+                  <span key={clash} className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-purple-900/60 text-purple-200 border border-purple-700/50 capitalize">
+                    {clash}: {choice}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

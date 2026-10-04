@@ -124,7 +124,8 @@ def filter_hard_constraints(
 def calculate_preference_scores(
     participants: List[Dict[str, Any]], 
     compatible_restaurants: List[Dict[str, Any]], 
-    votes: Dict[str, Dict[str, str]]
+    votes: Dict[str, Dict[str, str]],
+    crave_clash_signals: Optional[Dict[str, Any]] = None
 ) -> Dict[str, float]:
     """
     STAGE 2: Multi-Objective Preference Scoring.
@@ -135,6 +136,7 @@ def calculate_preference_scores(
     - Ambience / vibe
     - Individual votes
     - Ratings and distance
+    - Soft Crave Clash mini-game signals (if played)
     """
     scores = {}
 
@@ -191,6 +193,37 @@ def calculate_preference_scores(
         dist = r.get("distance_km", 2.0)
         score += max(0.0, (5.0 - dist) * 2.0)
 
+        # 7. Optional Crave Clash Mini-Game Signals (Soft tie-breaker only)
+        if crave_clash_signals:
+            comfort = str(crave_clash_signals.get("comfort", "")).lower()
+            flavor = str(crave_clash_signals.get("flavor", "")).lower()
+            wallet = str(crave_clash_signals.get("wallet", "")).lower()
+            vibe = str(crave_clash_signals.get("vibe", "")).lower()
+
+            # Comfort Clash: Pizza vs Noodles
+            if comfort == "pizza" and any(k in r_cuisine or k in r_tags for k in ["pizza", "italian", "continental"]):
+                score += 12.0
+            elif comfort == "noodles" and any(k in r_cuisine or k in r_tags for k in ["chinese", "indo-chinese", "asian", "noodles"]):
+                score += 12.0
+
+            # Spice Clash: Spicy vs Mild
+            if flavor == "spicy" and any(k in r_cuisine or k in r_tags for k in ["street food", "chaat", "tandoori", "punjabi", "mughlai", "spicy"]):
+                score += 8.0
+            elif flavor == "mild" and any(k in r_cuisine or k in r_tags for k in ["bakery", "cafe", "continental", "south indian", "mild"]):
+                score += 8.0
+
+            # Wallet Clash: Budget vs Premium
+            if wallet == "budget" and r_cost <= 400:
+                score += 10.0
+            elif wallet == "premium" and (r_cost >= 500 or r.get("rating", 4.0) >= 4.6):
+                score += 10.0
+
+            # Vibe Clash: Cafe vs Restaurant
+            if vibe == "cafe" and any(k in r_cuisine or k in r_tags for k in ["cafe", "bakery", "street food", "quick bites"]):
+                score += 8.0
+            elif vibe == "restaurant" and any(k in r_cuisine or k in r_tags for k in ["thali", "family", "dining", "tandoor", "multicuisine"]):
+                score += 8.0
+
         scores[r_id] = round(score, 1)
 
     return scores
@@ -200,7 +233,8 @@ def build_gemma_prompt(
     restaurants: List[Dict[str, Any]], 
     votes: Dict[str, Dict[str, str]], 
     scores: Dict[str, float], 
-    city: str
+    city: str,
+    crave_clash_signals: Optional[Dict[str, Any]] = None
 ) -> str:
     prompt = f"### DINING GROUP IN {city.upper()} & PARTICIPANT CONSTRAINTS:\n"
     for p in participants:
@@ -215,6 +249,12 @@ def build_gemma_prompt(
         vibe = prefs.get("vibe", "Casual")
         
         prompt += f"- {name}: Diet=[{', '.join(active_diets) or 'No restrictions'}], Cravings=[{cravings}], Dislikes=[{dislikes}], Budget=[₹{b_min}–₹{b_max}], Vibe=[{vibe}]\n"
+
+    if crave_clash_signals:
+        prompt += "\n### OPTIONAL CRAVE CLASH SIGNALS (Soft Tie-Breaker Mini-Game Signals):\n"
+        for duel, pick in crave_clash_signals.items():
+            prompt += f"- {duel.replace('_', ' ').title()}: Group opted for '{pick}'\n"
+        prompt += "Incorporate these soft game preferences into your verdict_summary (never override hard dietary restrictions).\n"
 
     prompt += "\n### FILTERED COMPATIBLE CANDIDATE RESTAURANTS (Hard Constraints Pre-Validated):\n"
     for r in restaurants:
@@ -287,7 +327,8 @@ def fallback_compromise_engine(
     compatible_restaurants: List[Dict[str, Any]], 
     votes: Dict[str, Dict[str, str]], 
     scores: Dict[str, float], 
-    city: str
+    city: str,
+    crave_clash_signals: Optional[Dict[str, Any]] = None
 ) -> Dict[str, Any]:
     """
     Deterministic compromise solver mirroring Gemma's reasoning logic.
@@ -380,6 +421,11 @@ def fallback_compromise_engine(
         f"and harmonizes diverse cravings without anyone having to sacrifice their dietary peace of mind."
     )
 
+    if crave_clash_signals:
+        signals_text = ", ".join([f"{k.capitalize()}: {v}" for k, v in crave_clash_signals.items() if v])
+        if signals_text:
+            verdict_summary += f" The group's Crave Clash tiebreaker ({signals_text}) further solidified {winner['name']} as the winning choice."
+
     return {
         "winner_id": winner_id,
         "match_score": match_score,
@@ -395,7 +441,8 @@ async def generate_ai_compromise(
     participants: List[Dict[str, Any]], 
     all_restaurants: List[Dict[str, Any]], 
     votes: Dict[str, Dict[str, str]], 
-    city: str = "Mumbai"
+    city: str = "Mumbai",
+    crave_clash_signals: Optional[Dict[str, Any]] = None
 ) -> AIDecision:
     """
     Main entrypoint for the BiteVote Gemma AI Compromise Engine.
@@ -406,16 +453,16 @@ async def generate_ai_compromise(
     4. Structured Output Mapping
     """
     compatible = filter_hard_constraints(participants, all_restaurants, room_city=city)
-    scores = calculate_preference_scores(participants, compatible, votes)
+    scores = calculate_preference_scores(participants, compatible, votes, crave_clash_signals=crave_clash_signals)
     
-    prompt = build_gemma_prompt(participants, compatible, votes, scores, city)
+    prompt = build_gemma_prompt(participants, compatible, votes, scores, city, crave_clash_signals=crave_clash_signals)
     gemma_output = await call_gemma_api(prompt)
     used_fallback = False
 
     compatible_ids = {r["id"] for r in compatible}
     if not gemma_output or gemma_output.get("winner_id") not in compatible_ids:
         logger.info("Utilizing deterministic Gemma compromise solver.")
-        gemma_output = fallback_compromise_engine(participants, compatible, votes, scores, city)
+        gemma_output = fallback_compromise_engine(participants, compatible, votes, scores, city, crave_clash_signals=crave_clash_signals)
         used_fallback = True
 
     restaurant_map = {r["id"]: r for r in compatible}

@@ -3,12 +3,18 @@
 > **The AI-Powered Compromise Engine that ends the 45-minute "Where should we eat?" debate forever.**  
 > Built for the **Hacktoberfest 2026 Weekend Challenge: Build for a Friend** (`#devchallenge #weekendchallenge #hf26challenge`).
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-bitevote.onrender.com-success?style=for-the-badge&logo=render)](https://bitevote.onrender.com/)
+
 [![Gemma 2](https://img.shields.io/badge/AI-Google%20Gemma%202%20(Open%20Weights)-8b5cf6.svg)](https://ai.google.dev/gemma)
 [![Database](https://img.shields.io/badge/Database-MongoDB%20Atlas-10b981.svg)](https://www.mongodb.com/atlas)
-[![Deployment](https://img.shields.io/badge/Deployed%20on-Render-46e3b7.svg)](https://render.com)
+[![Deployment](https://img.shields.io/badge/Deployed%20on-Render-46e3b7.svg)](https://bitevote.onrender.com/)
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688.svg)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/Frontend-React%2018%20%2B%20Tailwind-61dafb.svg)](https://react.dev)
 [![Region](https://img.shields.io/badge/Edition-India%20First%20%F0%9F%87%AE%F0%9F%87%B3-orange.svg)](#)
+
+🌐 **Live Application:** [https://bitevote.onrender.com/](https://bitevote.onrender.com/)  
+💻 **GitHub Repository:** [https://github.com/ishapalkar/BiteVote_hacktoberfest](https://github.com/ishapalkar/BiteVote_hacktoberfest)  
+🏥 **API Health Check:** [https://bitevote.onrender.com/api/health](https://bitevote.onrender.com/api/health)
 
 ---
 
@@ -134,3 +140,12 @@ npm run dev
 Open **`http://localhost:5173`**.
 
 ---
+
+## 🌐 Live Deployment & Resources
+
+* 🔗 **Live Web Application:** [https://bitevote.onrender.com/](https://bitevote.onrender.com/)
+* 🏥 **Backend Health Endpoint:** [https://bitevote.onrender.com/api/health](https://bitevote.onrender.com/api/health)
+* 💻 **GitHub Repository:** [https://github.com/ishapalkar/BiteVote_hacktoberfest](https://github.com/ishapalkar/BiteVote_hacktoberfest)
+* 🤖 **AI Model:** [Google Gemma 2 (27B Instruct) on Hugging Face](https://huggingface.co/google/gemma-2-27b-it)
+* 🗄️ **Database:** [MongoDB Atlas](https://www.mongodb.com/atlas)
+* ☁️ **Cloud Platform:** [Render](https://render.com)

@@ -134,19 +134,3 @@ npm run dev
 Open **`http://localhost:5173`**.
 
 ---
-
-## ⚡ Try the 1-Click Mumbai Demo
-
-1. Open `http://localhost:8000`.
-2. Click **"⚡ Try Mumbai 3-Friend Demo (1-Click)"**.
-3. It loads the exact prompt scenario:
-   * **Sarah (Host):** Jain + ₹300–500 + Maharashtrian
-   * **Rahul:** Vegetarian + ₹400–700 + North Indian
-   * **Aisha:** Vegetarian + ₹300–600 + Indo-Chinese
-4. Click **"Summon Gemma AI Verdict!"** to watch Gemma arbitrate the compromise, celebrate with confetti, reveal the trade-off matrix, and recommend real dishes from the menu!
-
----
-
-## 📄 License
-
-Distributed under the MIT License. See [LICENSE](LICENSE) for details.

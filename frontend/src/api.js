@@ -69,4 +69,6 @@ export const api = {
     request(`/api/rooms/${code.toUpperCase().trim()}/reset`, {
       method: 'POST',
     }),
+  getBiteGuide: (restaurantId) => 
+    request(`/api/restaurants/${restaurantId}/biteguide`),
 };

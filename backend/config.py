@@ -18,6 +18,9 @@ class Settings(BaseModel):
     GEMMA_API_BASE: str = os.getenv("GEMMA_API_BASE", "https://openrouter.ai/api/v1")
     GEMMA_MODEL: str = os.getenv("GEMMA_MODEL", "google/gemma-2-27b-it")
     
+    # SerpApi Web & YouTube Intelligence
+    SERPAPI_KEY: str = os.getenv("SERPAPI_KEY", "").strip()
+    
     # Server / Render
     PORT: int = int(os.getenv("PORT", 8000))
     CORS_ORIGINS: list[str] = ["*"]

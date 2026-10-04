@@ -235,4 +235,27 @@ async def test_crave_clash_signals_flow():
         winner = next(r for r in SEED_RESTAURANTS if r["id"] == decision["winner_id"])
         assert winner["dietary"]["jain_available"] is True
 
+@pytest.mark.asyncio
+async def test_biteguide_endpoint():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as ac:
+        res = await ac.get("/api/restaurants/mum-1/biteguide")
+        assert res.status_code == 200
+        data = res.json()
+        assert data["restaurant_id"] == "mum-1"
+        assert "top_dishes" in data
+        assert len(data["top_dishes"]) > 0
+        assert "tasting_menu" in data
+        assert "youtube_reviews" in data
+        
+        first_dish = data["top_dishes"][0]
+        assert "name" in first_dish
+        assert "recommendation_strength" in first_dish
+        assert "why_try_it" in first_dish
+
+        # Test caching
+        res_cached = await ac.get("/api/restaurants/mum-1/biteguide")
+        assert res_cached.status_code == 200
+        assert res_cached.json()["cached"] is True
+
 

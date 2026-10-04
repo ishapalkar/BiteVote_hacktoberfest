@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Query, HTTPException
 from typing import List, Optional
 from backend.restaurants_data import SEED_RESTAURANTS, INDIAN_CITIES
+from backend.biteguide_service import generate_biteguide
 
 router = APIRouter(prefix="/api/restaurants", tags=["restaurants"])
 
@@ -52,4 +53,16 @@ async def get_restaurant_by_id(restaurant_id: str):
     for r in SEED_RESTAURANTS:
         if r["id"] == restaurant_id:
             return r
+    raise HTTPException(status_code=404, detail="Restaurant not found")
+
+@router.get("/{restaurant_id}/biteguide")
+async def get_restaurant_biteguide(restaurant_id: str):
+    for r in SEED_RESTAURANTS:
+        if r["id"] == restaurant_id:
+            return await generate_biteguide(
+                restaurant_id=r["id"],
+                restaurant_name=r["name"],
+                city=r.get("city", "Mumbai"),
+                restaurant_data=r
+            )
     raise HTTPException(status_code=404, detail="Restaurant not found")

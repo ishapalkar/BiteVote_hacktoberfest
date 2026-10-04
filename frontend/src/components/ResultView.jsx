@@ -5,6 +5,7 @@ import {
   RotateCcw, Check, ShieldCheck, HeartHandshake, Utensils, IndianRupee, Leaf, Swords
 } from 'lucide-react';
 import Avatar from './Avatar';
+import BiteGuideSection from './BiteGuideSection';
 
 export default function ResultView({ room, restaurants, onReset, currentUser }) {
   const [copiedSummary, setCopiedSummary] = useState(false);
@@ -213,6 +214,9 @@ export default function ResultView({ room, restaurants, onReset, currentUser }) 
           </div>
         )}
       </div>
+
+      {/* BiteGuide: Web & YouTube Intelligence via SerpApi + Gemma 2 */}
+      <BiteGuideSection restaurant={winner} city={room.city} />
 
       {/* Personalized Dish Suggestions */}
       <div className="space-y-3">
